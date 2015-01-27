@@ -1,0 +1,33 @@
+{
+  "name": "node-red-contrib-nestmoment",
+  "version": "0.0.1",
+  "description": "Node-Red Node that produces a nicely formatted Date/Time string using the Moment.JS library.",
+  "dependencies": {
+    "moment": "2.x"
+  },
+  "author" : {
+    "name" : "Julian Knight",
+    "url" : "https://github.com/totallyinformation"
+  },
+  "keywords": [
+    "node-red",
+    "moment",
+    "time",
+    "date"
+  ],
+  "node-red": {
+    "nodes": {
+      "moment": "moment/nrmoment.js"
+    }
+  },
+  "main": "moment/nrmoment.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/totallyinformation/node-red-contrib-moment"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/totallyinformation/node-red-contrib-moment/issues"
+  },
+  "homepage": "https://github.com/totallyinformation/node-red-contrib-moment"
+}
