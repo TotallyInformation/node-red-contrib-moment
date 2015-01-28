@@ -30,30 +30,87 @@ module.exports = function(RED) {
         
         // Store local copies of the node configuration (as defined in the .html)
         this.topic = n.topic;
+        this.input = n.input;
+        this.format = n.format;
+        this.output = n.output;
 
         // copy "this" object in case we need it in context of callbacks of other functions.
         var node = this;
         
-        // Do whatever you need to do in here - declare callbacks etc
-        // Note: this sample doesn't do anything much - it will only send
-        // this message once at startup...
-        // Look at other real nodes for some better ideas of what to do....
-        var msg = {};
-        msg.topic = this.topic;
-        msg.payload = "Hello world !"
         // send out the message to the rest of the workspace.
         // ... this message will get sent at startup so you may not see it in a debug node.
-        this.send(msg);
+        // Define OUTPUT msg...        
+        //var msg = {};
+        //msg.topic = this.topic;
+        //msg.payload = "Hello world !"
+        //node.send(msg);
         
         // respond to inputs....
-        this.on('input', function (msg) {
+        node.on('input', function (msg) {
             node.warn("I saw a payload: "+msg.payload);
+
+            // If the node's topic is set, copy to output msg
+            if ( node.topic !== '' ) {
+                msg.topic = node.topic;
+            } // If nodes topic is blank, the input msg.topic is already there
+            
+            // make sure input property is set, if not, assume msg.payload
+            if ( node.input === '' ) {
+                node.input = 'payload';
+                node.warn('Input field is REQUIRED, currently blank, set to msg.payload');
+            }
+            // make sure output property is set, if not, assume msg.payload
+            if ( node.output === '' ) {
+                node.output = 'payload';
+                node.warn('Output field is REQUIRED, currently blank, set to msg.payload');
+            }
+
+            // Make sure that the node's input property actually exists on the input msg
+            var out = '';
+            if ( node.input in msg ) {
+                // It is so grab it
+                out = msg[node.input];
+            } else {
+                node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to a blank string.');
+            }
+
+            // We are going to overwrite the output property without warning or permission!
+            
+            // Get a Moment.JS date/time - NB: the result might not be
+            //  valid since the input might not parse as a date/time
+            var mDT = moment(out);
+            // Check if the input is a date?
+            if ( ! mDT.isValid() ) {
+                node.warn('The input property was NOT a recognisable date. Output will be a blank string');
+                msg[node.output] = '';
+            } else {
+                // Handle different format strings. We allow any fmt str that
+                // Moment.JS supports but also some special formats
+                
+                // If format not set, assume ISO8601 string
+                if ( node.format === '' || node.format.toUpperCase() === 'ISO8601' ) {
+                    msg[node.output] = mDT.toISOString();
+                } else if ( node.format.toLowerCase() === 'fromnow' || node.format.toLowerCase() === 'timeago' ) {
+                    // We are also going to handle time-from-now (AKA time ago) format
+                    msg[node.output] = mDT.fromNow();
+                } else if ( node.format.toLowerCase() === 'calendar' || node.format.toLowerCase() === 'aroundnow' ) {
+                    // We are also going to handle calendar format (AKA around now)
+                    msg[node.output] = mDT.calendar();
+                } else if ( node.format.toLowerCase() === 'date' || node.format.toLowerCase() === 'jsdate' ) {
+                    // we also allow output as a Javascript Date object
+                    msg[node.output] = mDT.toDate();
+                } else {
+                    // or we assume it is a valid format definition ...
+                    msg[node.output] = mDT.format(node.format);
+                }
+            }
+            
             // in this example just send it straight on... should process it here really
             node.send(msg);
         });
         
         // Tidy up if we need to
-        //this.on("close", function() {
+        //node.on("close", function() {
             // Called when the node is shutdown - eg on redeploy.
             // Allows ports to be closed, connections dropped etc.
             // eg: node.client.disconnect();

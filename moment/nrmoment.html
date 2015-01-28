@@ -35,18 +35,18 @@
 
     <!-- Input object -->
     <div class="form-row">
-        <label for="node-input-input"><i class="fa fa-tasks"></i> Input</label>
-        <input type="text" id="node-input-input" placeholder="msg.payload">
+        <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input</label>
+        msg.<input type="text" id="node-input-input" placeholder="msg.payload">
     </div>
     <!-- Format String -->
     <div class="form-row">
-        <label for="node-input-format"><i class="fa fa-tasks"></i> Format</label>
+        <label for="node-input-format"><i class="fa fa-eye-open"></i> Format</label>
         <input type="text" id="node-input-format" placeholder="yyyy-mm-dd HH:mm:ss">
     </div>
     <!-- Output object -->
     <div class="form-row">
-        <label for="node-input-output"><i class="fa fa-tasks"></i> Output</label>
-        <input type="text" id="node-input-output" placeholder="msg.payload">
+        <label for="node-input-output"><i class="fa fa-arrow-right"></i> Output</label>
+        msg.<input type="text" id="node-input-output" placeholder="msg.payload">
     </div>
 
     <br/>
@@ -69,7 +69,17 @@
     <p>Input must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js can resolve to such</a>.</p>
     <p>Outputs a formatted string on <b>msg.payload</b> by default, change by setting the output field.</p>
     <p>Also adds msg.topic if specified.</p>
-    <b>Default format is yyyy-mm-dd HH:mm:ss.</p>
+    <p>Default format is ISO8601.</p>
+    <p>Format may be any <a href="http://momentjs.com/docs/#/displaying/format/">format string allowed by Moment.JS</a><br>
+    or one of the following (not case sensitive, alternatives in brackets):</p>
+    <dl>
+        <dt>fromNow (timeAgo)</dt>
+        <dd>e.g. 30 minutes ago</dd>
+        <dt>calendar (aroundNow)</dt>
+        <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
+        <dt>date (jsDate)</dt>
+        <dd>a Javascript Date object</dd>
+    </dl>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
@@ -80,9 +90,9 @@
         defaults: {               // defines the editable properties of the node
             name: {value:""},     //  along with default values.
             topic: {value:""},    //, required:true}
-            input: {value:"msg.payload"},
-            format: {value:"yyyy-mm-dd HH:nn-ss"},
-            output: {value:"msg.payload"}
+            input: {value:"payload"},
+            format: {value:"ISO8601"},
+            output: {value:"payload"}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
         outputs:1,              // set the number of outputs - 0 to n
