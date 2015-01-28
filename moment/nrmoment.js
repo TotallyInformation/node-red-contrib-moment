@@ -47,8 +47,6 @@ module.exports = function(RED) {
         
         // respond to inputs....
         node.on('input', function (msg) {
-            node.warn("I saw a payload: "+msg.payload);
-
             // If the node's topic is set, copy to output msg
             if ( node.topic !== '' ) {
                 msg.topic = node.topic;

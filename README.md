@@ -9,10 +9,34 @@ Run the following command in the root directory of your Node-RED install
 
 	npm install node-red-contrib-moment
 
+While in development, install with:
+   
+    npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 #Usage
 
-TBC
+The node expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
+object accordingly.
+
+There are 4 possible parameters to the node.
+
+  1) *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
+  2) *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
+     Input must be either a Javascript Date object or a date/time string that can be parsed by Modment.JS.
+  3) *Format* - defines how the output should be formatted.
+     Can be any format string recognised by Moment.JS or one of:
+    <dl>
+        <dt>fromNow (timeAgo)</dt>
+        <dd>e.g. 30 minutes ago</dd>
+        <dt>calendar (aroundNow)</dt>
+        <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
+        <dt>date (jsDate)</dt>
+        <dd>a Javascript Date object</dd>
+        <dt>If left blank or set to ISO8601</dt>
+        <dd>Output in ISO8601 format</dd>
+    </dl>
+  4) *Output* - defines the property on the output msg that will carry the formatted date/time string (or Javascript object).
+  5) *Name* - as usual, a unique name identifier for the node instance.
 
 #License 
 
