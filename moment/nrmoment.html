@@ -19,16 +19,34 @@
 
 <!-- First, the content of the edit dialog is defined.                       -->
 <script type="text/x-red" data-template-name="moment">
-   <!-- data-template-name identifies the node type this is for              -->
+    <!-- data-template-name identifies the node type this is for              -->
+    
+    <!-- Each of the following divs creates a field in the edit dialog.       -->
+    <!-- Generally, there should be an input for each property of the node.   -->
+    <!-- The for and id attributes identify the corresponding property        -->
+    <!-- (with the 'node-input-' prefix).                                     -->
+    <!-- The available icon classes are defined Twitter Bootstrap glyphicons  -->
 
-   <!-- Each of the following divs creates a field in the edit dialog.       -->
-   <!-- Generally, there should be an input for each property of the node.   -->
-   <!-- The for and id attributes identify the corresponding property        -->
-   <!-- (with the 'node-input-' prefix).                                     -->
-   <!-- The available icon classes are defined Twitter Bootstrap glyphicons  -->
+    <!-- TOPIC -->
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
         <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+
+    <!-- Input object -->
+    <div class="form-row">
+        <label for="node-input-input"><i class="fa fa-tasks"></i> Input</label>
+        <input type="text" id="node-input-input" placeholder="msg.payload">
+    </div>
+    <!-- Format String -->
+    <div class="form-row">
+        <label for="node-input-format"><i class="fa fa-tasks"></i> Format</label>
+        <input type="text" id="node-input-format" placeholder="yyyy-mm-dd HH:mm:ss">
+    </div>
+    <!-- Output object -->
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-tasks"></i> Output</label>
+        <input type="text" id="node-input-output" placeholder="msg.payload">
     </div>
 
     <br/>
@@ -43,31 +61,35 @@
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="moment">
-   <!-- data-help-name identifies the node type this help is for             -->
-   <!-- This content appears in the Info sidebar when a node is selected     -->
-   <!-- The first <p> is used as the pop-up tool tip when hovering over a    -->
-   <!-- node in the palette.                                                 -->
-   <p>Simple sample input node. Just sends a single message when it starts up.
-   This is not very useful.</p>
-   <p>Outputs an object called <b>msg</b> containing <b>msg.topic</b> and
-   <b>msg.payload</b>. msg.payload is a String.</p>
+    <!-- data-help-name identifies the node type this help is for             -->
+    <!-- This content appears in the Info sidebar when a node is selected     -->
+    <!-- The first <p> is used as the pop-up tool tip when hovering over a    -->
+    <!-- node in the palette.                                                 -->
+    <p>Format an input date and|or time message object.</p>
+    <p>Input must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js can resolve to such</a>.</p>
+    <p>Outputs a formatted string on <b>msg.payload</b> by default, change by setting the output field.</p>
+    <p>Also adds msg.topic if specified.</p>
+    <b>Default format is yyyy-mm-dd HH:mm:ss.</p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
-<!-- The example below shows a small subset of the properties that can be set-->
 <script type="text/javascript">
     RED.nodes.registerType('moment',{
-        category: 'input',      // the palette category
-        defaults: {             // defines the editable properties of the node
-            name: {value:""},   //  along with default values.
-            topic: {value:"", required:true}
+        category: 'formats',      // the palette category
+        color: '#a6bbcf',
+        defaults: {               // defines the editable properties of the node
+            name: {value:""},     //  along with default values.
+            topic: {value:""},    //, required:true}
+            input: {value:"msg.payload"},
+            format: {value:"yyyy-mm-dd HH:nn-ss"},
+            output: {value:"msg.payload"}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
         outputs:1,              // set the number of outputs - 0 to n
         // set the icon (held in icons dir below where you save the node)
-        icon: "myicon.png",     // saved in  icons/myicon.png
+        icon: "arrow-in.png",     // saved in  icons/myicon.png
         label: function() {     // sets the default label contents
-            return this.name||this.topic||"sample";
+            return this.name||this.topic||"Date/Time Formatter";
         },
         labelStyle: function() { // sets the class to apply to the label
             return this.name?"node_label_italic":"";
