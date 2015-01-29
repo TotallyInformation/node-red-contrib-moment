@@ -18,12 +18,14 @@ While in development, install with:
 The node expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
 object accordingly.
 
-There are parameters to the node.
+There are 5 parameters to the node.
 
 1. *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
 2. *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
    Input must be either a Javascript Date object or a [date/time string that can be parsed by Modment.JS](http://momentjs.com/docs/#/parsing/string/).
+
    It tries to work out the input format and allows more variations to be recognised. Such as 'Thursday, February 6th, 2014 9:20pm'
+
    It can also be null, non-existant or an empty string, in which case it will be set to the current date/time. Useful for easily injecting the
    current date/time from any trigger.
 3. *Format* - defines how the output should be formatted.
@@ -52,7 +54,9 @@ Summary of things I'd like to do with the moment node (not necessarily immediate
 * [ ] Improve the error messages when Moment.JS fails to interpret the input (say why)
 * [ ] Allow more input date/time formats - turns out Moment.JS doesn't really help here. At present, I see too many input failures from US/UK date formats, etc.
   It would be great if I could parse "human" inputs like "tomorrow" and "2 minutes from now". We can output them now but not input them.
+
   ~~Partly complete: Added the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat).~~ That failed, see code for details.
+
   Maybe add a dropdown with a country code to give a hint.
 
 #License 
