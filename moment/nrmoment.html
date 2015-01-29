@@ -27,6 +27,21 @@
     <!-- (with the 'node-input-' prefix).                                     -->
     <!-- The available icon classes are defined Twitter Bootstrap glyphicons  -->
 
+    <!-- ** Unused templates for input types...
+    <div class="form-row">
+        <select id="node-input-action" style="width:95%; margin-right:5px;">
+        <option value="replace">Set the value of the message property</option>
+        <option value="change">Search/replace the value of the message property</option>
+        <option value="delete">Delete the message property</option>
+    </div>
+    </select>
+    <div class="form-row" id="node-reg-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-reg" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-reg" style="width: 70%;">Use regular expressions</label>
+    </div>
+    -->
+
     <!-- TOPIC -->
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
@@ -36,17 +51,21 @@
     <!-- Input object -->
     <div class="form-row">
         <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input <i>msg.</i></label>
-        <input type="text" id="node-input-input" placeholder="msg.payload">
+        <input type="text" id="node-input-input" style="width: 63%;" placeholder="payload">
     </div>
     <!-- Format String -->
     <div class="form-row">
         <label for="node-input-format"><i class="fa fa-eye-open"></i> Format</label>
-        <input type="text" id="node-input-format" placeholder="yyyy-mm-dd HH:mm:ss">
+        <input type="text" id="node-input-format" placeholder="ISO8601 or Date Object">
+    </div>
+    <div class="form-tips">
+        Default output format is ISO8601 if the input is a Date object and is a Date object if the input is a string.
+        See the info sidebar for formatting details.
     </div>
     <!-- Output object -->
     <div class="form-row">
         <label for="node-input-output"><i class="fa fa-arrow-right"></i> Output <i>msg.</i></label>
-        <input type="text" id="node-input-output" placeholder="msg.payload">
+        <input type="text" id="node-input-output" style="width: 63%;" placeholder="payload">
     </div>
 
     <br/>
@@ -73,12 +92,16 @@
     <p>Format may be any <a href="http://momentjs.com/docs/#/displaying/format/">format string allowed by Moment.JS</a><br>
     or one of the following (not case sensitive, alternatives in brackets):</p>
     <dl>
+        <dt>If left blank</dt>
+        <dd>If the input is a Javascript Date object, output in ISO8601 format. If the input is a recognised date string, output a Javascript Date object</dd>
+        <dt>ISO8601 (ISO)</dt>
+        <dd>ISO 8602 format, e.g. "2015-01-28T16:24:48+00:00"<br>This is the default if the input is a Javascript Date object</dd>
+        <dt>date (jsDate)</dt>
+        <dd>a Javascript Date object<br>This is the default if the input is a recognised date string</dd>
         <dt>fromNow (timeAgo)</dt>
         <dd>e.g. 30 minutes ago</dd>
         <dt>calendar (aroundNow)</dt>
         <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
-        <dt>date (jsDate)</dt>
-        <dd>a Javascript Date object</dd>
     </dl>
 </script>
 

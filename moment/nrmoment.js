@@ -21,7 +21,9 @@ module.exports = function(RED) {
     "use strict";
     
     // require moment.js (must be installed from package.js as a dependency)
-    var moment = require("moment");
+    var moment      = require("moment"),
+        parseFormat = require('moment-parseformat') // More input options
+    ;
     
     // The main node definition - most things happen in here
     function FormatDateTime(n) {
@@ -64,10 +66,10 @@ module.exports = function(RED) {
             }
 
             // Make sure that the node's input property actually exists on the input msg
-            var out = '';
+            var inp = '';
             if ( node.input in msg ) {
                 // It is so grab it
-                out = msg[node.input];
+                inp = msg[node.input];
             } else {
                 node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to a blank string.');
             }
@@ -76,7 +78,15 @@ module.exports = function(RED) {
             
             // Get a Moment.JS date/time - NB: the result might not be
             //  valid since the input might not parse as a date/time
-            var mDT = moment(out);
+            // We will use the Moment.JS plugin parseFormat to extend the 
+            // detection of valid dates. It will TRY to work out the correct
+            // order of a x/x/yyyy but the preferred order is the fallback
+            var format = parseFormat( inp, {preferredOrder: {
+                '/': 'DMY',  // Preferring UK layout here! Probably ought to put as an option.
+                '.': 'MDY',  // Use . separators to get US format dates
+                '-': 'YMD'   // Use - separators to get ISO format dates (by far the best! Always use these if you can!)
+            } } );
+            var mDT = moment(inp).format(format);
             // Check if the input is a date?
             if ( ! mDT.isValid() ) {
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string');
@@ -85,8 +95,14 @@ module.exports = function(RED) {
                 // Handle different format strings. We allow any fmt str that
                 // Moment.JS supports but also some special formats
                 
-                // If format not set, assume ISO8601 string
-                if ( node.format === '' || node.format.toUpperCase() === 'ISO8601' ) {
+                // If format not set, assume ISO8601 string if input is a Date otherwise assume Date
+                if ( node.format === '' ) {
+                    if ( moment.isDate(inp) ) { // Is the input a JS Date object? If so, output a string
+                        msg[node.output] = mDT.toISOString();
+                    } else {                    // otherwise, output a Date object
+                        msg[node.output] = mDT.toDate();
+                    }
+                } else if ( node.format.toUpperCase() === 'ISO8601'  || node.format.toLowerCase() === 'iso' ) {
                     msg[node.output] = mDT.toISOString();
                 } else if ( node.format.toLowerCase() === 'fromnow' || node.format.toLowerCase() === 'timeago' ) {
                     // We are also going to handle time-from-now (AKA time ago) format
