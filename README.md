@@ -20,13 +20,13 @@ object accordingly.
 
 There are parameters to the node.
 
-  1) *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
-  2) *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
-     Input must be either a Javascript Date object or a [date/time string that can be parsed by Modment.JS](http://momentjs.com/docs/#/parsing/string/).
-     Have also used the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat) for Moment.JS to extend the input capabilities.
-     It tries to work out the input format and allows more variations to be recognised. Such as 'Thursday, February 6th, 2014 9:20pm'
-  3) *Format* - defines how the output should be formatted.
-     Can be any [format string recognised by Moment.JS](http://momentjs.com/docs/#/displaying/) or one of (alternative spellings in brackets, spellings are not case sensitive):
+1. *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
+2. *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
+   Input must be either a Javascript Date object or a [date/time string that can be parsed by Modment.JS](http://momentjs.com/docs/#/parsing/string/).
+   Have also used the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat) for Moment.JS to extend the input capabilities.
+   It tries to work out the input format and allows more variations to be recognised. Such as 'Thursday, February 6th, 2014 9:20pm'
+3. *Format* - defines how the output should be formatted.
+   Can be any [format string recognised by Moment.JS](http://momentjs.com/docs/#/displaying/) or one of (alternative spellings in brackets, spellings are not case sensitive):
     <dl>
         <dt>If left blank</dt>
         <dd>If the input is a Javascript Date object, output in ISO8601 format. If the input is a recognised date string, output a Javascript Date object</dd>
@@ -39,19 +39,20 @@ There are parameters to the node.
         <dt>calendar (aroundNow)</dt>
         <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
     </dl>
-  4) *Output* - defines the property on the output msg that will carry the formatted date/time string (or Javascript object).
-  5) *Name* - as usual, a unique name identifier for the node instance.
+4. *Output* - defines the property on the output msg that will carry the formatted date/time string (or Javascript object).
+5. *Name* - as usual, a unique name identifier for the node instance.
 
 #To Do
 
 Summary of things I'd like to do with the moment node (not necessarily immediately):
 
-* Add a combo box to the Format field with common formats pre-populated
+* [ ] Add a combo box to the Format field with common formats pre-populated
   Combo boxes are fiddly in HTML. 
-* Improve the error messages when Moment.JS fails to interpret the input (say why)
-* Allow more input date/time formats - turns out Moment.JS doesn't really help here. At present, I see too many input failures from US/UK date formats, etc.
+* [ ] Improve the error messages when Moment.JS fails to interpret the input (say why)
+* [ ] Allow more input date/time formats - turns out Moment.JS doesn't really help here. At present, I see too many input failures from US/UK date formats, etc.
   It would be great if I could parse "human" inputs like "tomorrow" and "2 minutes from now". We can output them now but not input them.
-  Partly complete: Added the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat).
+  ~~Partly complete: Added the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat).~~ That failed, see code for details.
+  Maybe add a dropdown with a country code to give a hint.
 
 #License 
 

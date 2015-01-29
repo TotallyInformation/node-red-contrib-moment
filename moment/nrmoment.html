@@ -51,7 +51,7 @@
     <!-- Input object -->
     <div class="form-row">
         <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input <i>msg.</i></label>
-        <input type="text" id="node-input-input" style="width: 63%;" placeholder="payload">
+        <input type="text" id="node-input-input" style="width: 53%;" placeholder="payload">
     </div>
     <!-- Format String -->
     <div class="form-row">
@@ -65,7 +65,7 @@
     <!-- Output object -->
     <div class="form-row">
         <label for="node-input-output"><i class="fa fa-arrow-right"></i> Output <i>msg.</i></label>
-        <input type="text" id="node-input-output" style="width: 63%;" placeholder="payload">
+        <input type="text" id="node-input-output" style="width: 53%;" placeholder="payload">
     </div>
 
     <br/>
@@ -79,17 +79,19 @@
 
 
 <!-- Next, some simple help text is provided for the node.                   -->
+<!-- The first <p> is used as the pop-up tool tip when hovering over pallette -->
 <script type="text/x-red" data-help-name="moment">
-    <!-- data-help-name identifies the node type this help is for             -->
-    <!-- This content appears in the Info sidebar when a node is selected     -->
-    <!-- The first <p> is used as the pop-up tool tip when hovering over a    -->
-    <!-- node in the palette.                                                 -->
-    <p>Format an input date and|or time message object.</p>
-    <p>Input must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js can resolve to such</a>.</p>
-    <p>Outputs a formatted string on <b>msg.payload</b> by default, change by setting the output field.</p>
-    <p>Also adds msg.topic if specified.</p>
-    <p>Default format is ISO8601.</p>
-    <p>Format may be any <a href="http://momentjs.com/docs/#/displaying/format/">format string allowed by Moment.JS</a><br>
+    <p>Format an input date-time message object.</p>
+    <p>
+        <b>Input</b> must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js can resolve to such</a>.
+        If the input is null, doesn't exist or is a blank string, the current Date/Time will be used. This can be used to add a current timestamp to a
+        flow of any kind easily.
+    </p>
+    <p>
+        <b>Output</b> is a formatted string or a Date object on <b>msg.payload</b> by default, change by setting the output field.
+    </p>
+    <p>Also adds msg.topic if specified otherwise passes it through.</p>
+    <p><b>Format</b> may be any <a href="http://momentjs.com/docs/#/displaying/format/">format string allowed by Moment.JS</a><br>
     or one of the following (not case sensitive, alternatives in brackets):</p>
     <dl>
         <dt>If left blank</dt>
@@ -109,18 +111,18 @@
 <script type="text/javascript">
     RED.nodes.registerType('moment',{
         category: 'formats',      // the palette category
-        color: '#a6bbcf',
+        color: '#E6E0F8',
         defaults: {               // defines the editable properties of the node
             name: {value:""},     //  along with default values.
             topic: {value:""},    //, required:true}
             input: {value:"payload"},
-            format: {value:"ISO8601"},
+            format: {value:""},
             output: {value:"payload"}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
         outputs:1,              // set the number of outputs - 0 to n
         // set the icon (held in icons dir below where you save the node)
-        icon: "arrow-in.png",     // saved in  icons/myicon.png
+        icon: "timer.png",     // saved in  icons/myicon.png
         label: function() {     // sets the default label contents
             return this.name||this.topic||"Date/Time Formatter";
         },

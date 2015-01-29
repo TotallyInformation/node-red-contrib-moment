@@ -1,3 +1,4 @@
+/*jslint devel: true, node: true, indent: 4*/
 /**
 * Copyright (c) 2015 Julian Knight (Totally Information)
 *
@@ -73,20 +74,16 @@ module.exports = function(RED) {
             } else {
                 node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to a blank string.');
             }
+            // If inp is a blank string, set it to a Date object with Now DT
+            if ( inp === '' ) {
+                inp = new Date();
+            }
 
             // We are going to overwrite the output property without warning or permission!
             
             // Get a Moment.JS date/time - NB: the result might not be
             //  valid since the input might not parse as a date/time
-            // We will use the Moment.JS plugin parseFormat to extend the 
-            // detection of valid dates. It will TRY to work out the correct
-            // order of a x/x/yyyy but the preferred order is the fallback
-            var format = parseFormat( inp, {preferredOrder: {
-                '/': 'DMY',  // Preferring UK layout here! Probably ought to put as an option.
-                '.': 'MDY',  // Use . separators to get US format dates
-                '-': 'YMD'   // Use - separators to get ISO format dates (by far the best! Always use these if you can!)
-            } } );
-            var mDT = moment(inp).format(format);
+            var mDT = moment(inp);
             // Check if the input is a date?
             if ( ! mDT.isValid() ) {
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string');
@@ -96,8 +93,11 @@ module.exports = function(RED) {
                 // Moment.JS supports but also some special formats
                 
                 // If format not set, assume ISO8601 string if input is a Date otherwise assume Date
+                
                 if ( node.format === '' ) {
-                    if ( moment.isDate(inp) ) { // Is the input a JS Date object? If so, output a string
+                    // Is the input a JS Date object? If so, output a string
+                    // Is it a number (Inject outputs a TIMESTAMP which is a number), also output a string
+                    if ( moment.isDate(inp) || Object.prototype.toString.call(inp) === '[object Number]') {
                         msg[node.output] = mDT.toISOString();
                     } else {                    // otherwise, output a Date object
                         msg[node.output] = mDT.toDate();
