@@ -23,8 +23,9 @@ There are parameters to the node.
 1. *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
 2. *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
    Input must be either a Javascript Date object or a [date/time string that can be parsed by Modment.JS](http://momentjs.com/docs/#/parsing/string/).
-   Have also used the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat) for Moment.JS to extend the input capabilities.
    It tries to work out the input format and allows more variations to be recognised. Such as 'Thursday, February 6th, 2014 9:20pm'
+   It can also be null, non-existant or an empty string, in which case it will be set to the current date/time. Useful for easily injecting the
+   current date/time from any trigger.
 3. *Format* - defines how the output should be formatted.
    Can be any [format string recognised by Moment.JS](http://momentjs.com/docs/#/displaying/) or one of (alternative spellings in brackets, spellings are not case sensitive):
     <dl>
