@@ -22,7 +22,7 @@ module.exports = function(RED) {
     "use strict";
     
     // require moment.js (must be installed from package.js as a dependency)
-    var moment      = require("moment"),
+    var moment      = require("moment")
         //parseFormat = require('moment-parseformat') // More input options // NOT WORKING
     ;
     
