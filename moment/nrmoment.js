@@ -50,6 +50,9 @@ module.exports = function(RED) {
         
         // respond to inputs....
         node.on('input', function (msg) {
+            'use strict';
+            // We will be using eval() so lets get a bit of safety using strict
+            
             // If the node's topic is set, copy to output msg
             if ( node.topic !== '' ) {
                 msg.topic = node.topic;
@@ -60,7 +63,8 @@ module.exports = function(RED) {
                 node.output = 'payload';
                 node.warn('Output field is REQUIRED, currently blank, set to msg.payload');
             }
-            // Reference the output object we want
+            // Reference the output object we want: it may be several layers deep
+            // e.g. msg. palyload.some.thing so we cant simply use msg[node.output]
             // This is cludgy, there is probably a better way!
             var outp = eval('msg.' + node.output);
 
@@ -87,7 +91,7 @@ module.exports = function(RED) {
             // Check if the input is a date?
             if ( ! mDT.isValid() ) {
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string');
-                msg[node.output] = '';
+                eval('msg.' + node.output + ' = ""; '); // SEE REASONS ABOVE! msg[node.output] = '';
             } else {
                 // Handle different format strings. We allow any fmt str that
                 // Moment.JS supports but also some special formats
@@ -98,24 +102,24 @@ module.exports = function(RED) {
                     // Is the input a JS Date object? If so, output a string
                     // Is it a number (Inject outputs a TIMESTAMP which is a number), also output a string
                     if ( moment.isDate(inp) || Object.prototype.toString.call(inp) === '[object Number]') {
-                        msg[node.output] = mDT.toISOString();
+                        eval('msg.' + node.output + ' = mDT.toISOString(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.toISOString();
                     } else {                    // otherwise, output a Date object
-                        msg[node.output] = mDT.toDate();
+                        eval('msg.' + node.output + ' = mDT.toDate(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.toDate();
                     }
                 } else if ( node.format.toUpperCase() === 'ISO8601'  || node.format.toLowerCase() === 'iso' ) {
-                    msg[node.output] = mDT.toISOString();
+                    eval('msg.' + node.output + ' = mDT.toISOString(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.toISOString();
                 } else if ( node.format.toLowerCase() === 'fromnow' || node.format.toLowerCase() === 'timeago' ) {
                     // We are also going to handle time-from-now (AKA time ago) format
-                    msg[node.output] = mDT.fromNow();
+                    eval('msg.' + node.output + ' = mDT.fromNow(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.fromNow();
                 } else if ( node.format.toLowerCase() === 'calendar' || node.format.toLowerCase() === 'aroundnow' ) {
                     // We are also going to handle calendar format (AKA around now)
-                    msg[node.output] = mDT.calendar();
+                    eval('msg.' + node.output + ' = mDT.calendar(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.calendar();
                 } else if ( node.format.toLowerCase() === 'date' || node.format.toLowerCase() === 'jsdate' ) {
                     // we also allow output as a Javascript Date object
-                    msg[node.output] = mDT.toDate();
+                    eval('msg.' + node.output + ' = mDT.toDate(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.toDate();
                 } else {
                     // or we assume it is a valid format definition ...
-                    msg[node.output] = mDT.format(node.format);
+                    eval('msg.' + node.output + ' = mDT.format(node.format); '); // SEE REASONS ABOVE! msg[node.output] = mDT.format(node.format);
                 }
             }
             
