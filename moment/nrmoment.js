@@ -71,11 +71,13 @@ module.exports = function(RED) {
             // If the input property is blank, assume NOW as the required timestamp
             // or make sure that the node's input property actually exists on the input msg
             var inp = '';
-            if ( node.input !== '' && node.input in msg ) {
-                // It is so grab it
-                inp = msg[node.input];
-            } else {
-                node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to NOW.');
+            if ( node.input !== '' ) {
+                if ( node.input in msg ) {
+                    // It is so grab it
+                    inp = msg[node.input];
+                } else {
+                    node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to NOW.');
+                }
             }
             // If inp is a blank string, set it to a Date object with Now DT
             if ( inp === '' ) {
