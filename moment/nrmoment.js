@@ -60,6 +60,7 @@ module.exports = function(RED) {
                 node.input = 'payload';
                 node.warn('Input field is REQUIRED, currently blank, set to msg.payload');
             }
+            console.log( eval('msg.' + node.output));
             // make sure output property is set, if not, assume msg.payload
             if ( node.output === '' ) {
                 node.output = 'payload';
@@ -68,15 +69,17 @@ module.exports = function(RED) {
 
             // Make sure that the node's input property actually exists on the input msg
             var inp = '';
-            if ( node.input in msg ) {
+            console.log(node.input !== '');
+            if ( node.input !== '' && node.input in msg ) {
                 // It is so grab it
                 inp = msg[node.input];
             } else {
-                node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to a blank string.');
+                node.warn('Input property, ' + node.input + ', does NOT exist in the input msg. Output has been set to NOW.');
             }
             // If inp is a blank string, set it to a Date object with Now DT
             if ( inp === '' ) {
                 inp = new Date();
+                console.log(inp); //check if this really is now
             }
 
             // We are going to overwrite the output property without warning or permission!
