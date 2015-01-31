@@ -55,21 +55,18 @@ module.exports = function(RED) {
                 msg.topic = node.topic;
             } // If nodes topic is blank, the input msg.topic is already there
             
-            // make sure input property is set, if not, assume msg.payload
-            if ( node.input === '' ) {
-                node.input = 'payload';
-                node.warn('Input field is REQUIRED, currently blank, set to msg.payload');
-            }
-            console.log( eval('msg.' + node.output));
             // make sure output property is set, if not, assume msg.payload
             if ( node.output === '' ) {
                 node.output = 'payload';
                 node.warn('Output field is REQUIRED, currently blank, set to msg.payload');
             }
+            // Reference the output object we want
+            // This is cludgy, there is probably a better way!
+            var outp = eval('msg.' + node.output);
 
-            // Make sure that the node's input property actually exists on the input msg
+            // If the input property is blank, assume NOW as the required timestamp
+            // or make sure that the node's input property actually exists on the input msg
             var inp = '';
-            console.log(node.input !== '');
             if ( node.input !== '' && node.input in msg ) {
                 // It is so grab it
                 inp = msg[node.input];
