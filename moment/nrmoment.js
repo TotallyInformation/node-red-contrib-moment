@@ -82,7 +82,6 @@ module.exports = function(RED) {
             // If inp is a blank string, set it to a Date object with Now DT
             if ( inp === '' ) {
                 inp = new Date();
-                console.log(inp); //check if this really is now
             }
 
             // We are going to overwrite the output property without warning or permission!
