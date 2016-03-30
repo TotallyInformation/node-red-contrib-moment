@@ -13,6 +13,9 @@ While in development, install with:
    
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
+#Updates
+1.0.5 - Merged a pull request containing a Locale option for localisation. 2016-03-30
+
 #Usage
 
 The node expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
@@ -22,7 +25,7 @@ There are 5 parameters to the node.
 
 1. *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
 2. *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
-   Input must be either a Javascript Date object or a [date/time string that can be parsed by Modment.JS](http://momentjs.com/docs/#/parsing/string/).
+   Input must be either a Javascript Date object or a [date/time string that can be parsed by Moment.JS](http://momentjs.com/docs/#/parsing/string/).
 
    It tries to work out the input format and allows more variations to be recognised. Such as 'Thursday, February 6th, 2014 9:20pm'
 
