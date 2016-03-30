@@ -58,6 +58,10 @@
         <label for="node-input-format"><i class="fa fa-eye-open"></i> Format</label>
         <input type="text" id="node-input-format" placeholder="ISO8601 or Date Object">
     </div>
+    <div class="form-row">
+        <label for="node-input-locale"><i class="fa fa-flag"></i> Locale</label>
+        <input type="text" id="node-input-locale" placeholder="en">
+    </div>    
     <div class="form-tips">
         Default output format is ISO8601 if the input is a Date object and is a Date object if the input is a string.
         See the info sidebar for formatting details.
@@ -117,6 +121,7 @@
             topic: {value:""},    //, required:true}
             input: {value:"payload"},
             format: {value:""},
+            locale: {value:""},            
             output: {value:"payload"}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
