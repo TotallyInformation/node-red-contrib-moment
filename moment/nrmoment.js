@@ -40,6 +40,10 @@ module.exports = function(RED) {
         // copy "this" object in case we need it in context of callbacks of other functions.
         var node = this;
         
+        if (n.locale) {
+            moment.locale(n.locale);
+        }        
+        
         // send out the message to the rest of the workspace.
         // ... this message will get sent at startup so you may not see it in a debug node.
         // Define OUTPUT msg...        
