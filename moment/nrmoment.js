@@ -122,6 +122,8 @@ module.exports = function(RED) {
                 } else if ( node.format.toLowerCase() === 'date' || node.format.toLowerCase() === 'jsdate' ) {
                     // we also allow output as a Javascript Date object
                     eval('msg.' + node.output + ' = mDT.toDate(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.toDate();
+                } else if ( node.format.toLowerCase() === 'duration') {
+                    eval('msg.' + node.output + ' = moment.duration(inp).humanize(); ');                    
                 } else {
                     // or we assume it is a valid format definition ...
                     eval('msg.' + node.output + ' = mDT.format(node.format); '); // SEE REASONS ABOVE! msg[node.output] = mDT.format(node.format);

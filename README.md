@@ -44,6 +44,8 @@ There are 5 parameters to the node.
         <dd>e.g. 30 minutes ago</dd>
         <dt>calendar (aroundNow)</dt>
         <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
+        <dt>duration</dt>
+        <dd>e.g. "8 minutes"</dd>        
     </dl>
 4. *Output* - defines the property on the output msg that will carry the formatted date/time string (or Javascript object).
 5. *Name* - as usual, a unique name identifier for the node instance.
