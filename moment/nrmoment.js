@@ -28,6 +28,7 @@ module.exports = function(RED) {
     
     // The main node definition - most things happen in here
     function FormatDateTime(n) {
+
         // Create a RED node
         RED.nodes.createNode(this,n);
         
@@ -38,11 +39,7 @@ module.exports = function(RED) {
         this.output = n.output;
 
         // copy "this" object in case we need it in context of callbacks of other functions.
-        var node = this;
-        
-        if (n.locale) {
-            moment.locale(n.locale);
-        }        
+        var node = this;    
         
         // send out the message to the rest of the workspace.
         // ... this message will get sent at startup so you may not see it in a debug node.
@@ -93,6 +90,8 @@ module.exports = function(RED) {
             // Get a Moment.JS date/time - NB: the result might not be
             //  valid since the input might not parse as a date/time
             var mDT = moment(inp);
+            if (n.locale) mDT.locale(n.locale);
+
             // Check if the input is a date?
             if ( ! mDT.isValid() ) {
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string');
