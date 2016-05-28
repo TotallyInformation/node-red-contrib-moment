@@ -92,6 +92,10 @@ module.exports = function(RED) {
             var mDT = moment(inp);
             if (n.locale) mDT.locale(n.locale);
 
+            // This hack is for those who store local date as UTC string
+            // Not pretty I know but mongoimport only knows UTC string and my programs don't...
+            if (n.fakeUTC) mDT = moment(mDT.toISOString().slice(0,-1));
+
             // Check if the input is a date?
             if ( ! mDT.isValid() ) {
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string');
