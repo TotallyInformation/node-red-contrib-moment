@@ -1,5 +1,5 @@
 {
-  "name": "node-red-contrib-moment-fork",
+  "name": "node-red-contrib-moment2",
   "version": "1.0.5",
   "description": "Node-Red Node that produces a nicely formatted Date/Time string using the Moment.JS library.",
   "dependencies": {
