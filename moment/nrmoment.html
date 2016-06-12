@@ -62,6 +62,11 @@
         <label for="node-input-locale"><i class="fa fa-flag"></i> Locale</label>
         <input type="text" id="node-input-locale" placeholder="en">
     </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-fakeUTC" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-fakeUTC" style="width: 70%;">Consider UTC string as local</label>
+    </div>
     <div class="form-tips">
         Default output format is ISO8601 if the input is a Date object and is a Date object if the input is a string.
         See the info sidebar for formatting details.
@@ -88,7 +93,7 @@
     <p>Format an input date-time message object.</p>
     <p>
         <b>Input</b> must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js can resolve to such</a>.
-        If the input is null, doesn't exist or is a blank string, the current Date/Time will be used. This can be used to add a current timestamp to a
+        If the input is null, doesn not exist or is a blank string, the current Date/Time will be used. This can be used to add a current timestamp to a
         flow of any kind easily.
     </p>
     <p>
@@ -124,7 +129,8 @@
             input: {value:"payload"},
             format: {value:""},
             locale: {value:""},
-            output: {value:"payload"}
+            output: {value:"payload"},
+            fakeUTC: {value: false }
         },
         inputs:1,               // set the number of inputs - only 0 or 1
         outputs:1,              // set the number of outputs - 0 to n

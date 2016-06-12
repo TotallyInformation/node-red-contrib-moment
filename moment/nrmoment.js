@@ -40,10 +40,6 @@ module.exports = function(RED) {
         // copy "this" object in case we need it in context of callbacks of other functions.
         var node = this;
 
-        if (n.locale) {
-            moment.locale(n.locale);
-        }
-
         // send out the message to the rest of the workspace.
         // ... this message will get sent at startup so you may not see it in a debug node.
         // Define OUTPUT msg...
@@ -93,6 +89,12 @@ module.exports = function(RED) {
             // Get a Moment.JS date/time - NB: the result might not be
             //  valid since the input might not parse as a date/time
             var mDT = moment(inp);
+            if (n.locale) mDT.locale(n.locale);
+
+            // Jacques44: This hack is for those who store local date as UTC string
+            // Not pretty I know but mongoimport only knows UTC string and my programs don't...
+            if (n.fakeUTC) mDT = moment(mDT.toISOString().slice(0,-1));
+
             // Check if the input is a date?
             if ( ! mDT.isValid() ) {
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string');
