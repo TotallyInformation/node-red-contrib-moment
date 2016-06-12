@@ -20,7 +20,7 @@
 <!-- First, the content of the edit dialog is defined.                       -->
 <script type="text/x-red" data-template-name="moment">
     <!-- data-template-name identifies the node type this is for              -->
-    
+
     <!-- Each of the following divs creates a field in the edit dialog.       -->
     <!-- Generally, there should be an input for each property of the node.   -->
     <!-- The for and id attributes identify the corresponding property        -->
@@ -61,7 +61,7 @@
     <div class="form-row">
         <label for="node-input-locale"><i class="fa fa-flag"></i> Locale</label>
         <input type="text" id="node-input-locale" placeholder="en">
-    </div>    
+    </div>
     <div class="form-tips">
         Default output format is ISO8601 if the input is a Date object and is a Date object if the input is a string.
         See the info sidebar for formatting details.
@@ -109,7 +109,7 @@
         <dt>calendar (aroundNow)</dt>
         <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
         <dt>duration</dt>
-        <dd>e.g. "8 minutes"</dd>        
+        <dd>e.g. "8 minutes"</dd>
     </dl>
 </script>
 
@@ -123,7 +123,7 @@
             topic: {value:""},    //, required:true}
             input: {value:"payload"},
             format: {value:""},
-            locale: {value:""},            
+            locale: {value:""},
             output: {value:"payload"}
         },
         inputs:1,               // set the number of inputs - only 0 or 1

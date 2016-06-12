@@ -10,7 +10,7 @@ Run the following command in the root directory of your Node-RED install
 	npm install node-red-contrib-moment
 
 While in development, install with:
-   
+
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 #Updates
@@ -55,7 +55,7 @@ There are 5 parameters to the node.
 Summary of things I'd like to do with the moment node (not necessarily immediately):
 
 * [ ] Add a combo box to the Format field with common formats pre-populated
-  Combo boxes are fiddly in HTML. 
+  Combo boxes are fiddly in HTML.
 * [ ] Improve the error messages when Moment.JS fails to interpret the input (say why)
 * [ ] Allow more input date/time formats - turns out Moment.JS doesn't really help here. At present, I see too many input failures from US/UK date formats, etc.
   It would be great if I could parse "human" inputs like "tomorrow" and "2 minutes from now". We can output them now but not input them.
@@ -64,7 +64,7 @@ Summary of things I'd like to do with the moment node (not necessarily immediate
 
   Maybe add a dropdown with a country code to give a hint.
 
-#License 
+#License
 
 This code is Open Source under an Apache 2 License. Please see the [apache2-license.txt file](https://github.com/TotallyInformation/node-red-contrib-moment/apache2-license.txt) for details.
 
@@ -72,7 +72,7 @@ You may not use this code except in compliance with the License. You may obtain 
 
     http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Please see the
 License for the specific language governing permissions and limitations under the License.
 

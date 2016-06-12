@@ -20,17 +20,17 @@
 
 module.exports = function(RED) {
     "use strict";
-    
+
     // require moment.js (must be installed from package.js as a dependency)
     var moment      = require("moment")
         //parseFormat = require('moment-parseformat') // More input options // NOT WORKING
     ;
-    
+
     // The main node definition - most things happen in here
     function FormatDateTime(n) {
         // Create a RED node
         RED.nodes.createNode(this,n);
-        
+
         // Store local copies of the node configuration (as defined in the .html)
         this.topic = n.topic;
         this.input = n.input;
@@ -39,29 +39,29 @@ module.exports = function(RED) {
 
         // copy "this" object in case we need it in context of callbacks of other functions.
         var node = this;
-        
+
         if (n.locale) {
             moment.locale(n.locale);
-        }        
-        
+        }
+
         // send out the message to the rest of the workspace.
         // ... this message will get sent at startup so you may not see it in a debug node.
-        // Define OUTPUT msg...        
+        // Define OUTPUT msg...
         //var msg = {};
         //msg.topic = this.topic;
         //msg.payload = "Hello world !"
         //node.send(msg);
-        
+
         // respond to inputs....
         node.on('input', function (msg) {
             'use strict';
             // We will be using eval() so lets get a bit of safety using strict
-            
+
             // If the node's topic is set, copy to output msg
             if ( node.topic !== '' ) {
                 msg.topic = node.topic;
             } // If nodes topic is blank, the input msg.topic is already there
-            
+
             // make sure output property is set, if not, assume msg.payload
             if ( node.output === '' ) {
                 node.output = 'payload';
@@ -89,7 +89,7 @@ module.exports = function(RED) {
             }
 
             // We are going to overwrite the output property without warning or permission!
-            
+
             // Get a Moment.JS date/time - NB: the result might not be
             //  valid since the input might not parse as a date/time
             var mDT = moment(inp);
@@ -100,9 +100,9 @@ module.exports = function(RED) {
             } else {
                 // Handle different format strings. We allow any fmt str that
                 // Moment.JS supports but also some special formats
-                
+
                 // If format not set, assume ISO8601 string if input is a Date otherwise assume Date
-                
+
                 if ( node.format === '' ) {
                     // Is the input a JS Date object? If so, output a string
                     // Is it a number (Inject outputs a TIMESTAMP which is a number), also output a string
@@ -123,17 +123,17 @@ module.exports = function(RED) {
                     // we also allow output as a Javascript Date object
                     eval('msg.' + node.output + ' = mDT.toDate(); '); // SEE REASONS ABOVE! msg[node.output] = mDT.toDate();
                 } else if ( node.format.toLowerCase() === 'duration') {
-                    eval('msg.' + node.output + ' = moment.duration(inp).humanize(); ');                    
+                    eval('msg.' + node.output + ' = moment.duration(inp).humanize(); ');
                 } else {
                     // or we assume it is a valid format definition ...
                     eval('msg.' + node.output + ' = mDT.format(node.format); '); // SEE REASONS ABOVE! msg[node.output] = mDT.format(node.format);
                 }
             }
-            
+
             // in this example just send it straight on... should process it here really
             node.send(msg);
         });
-        
+
         // Tidy up if we need to
         //node.on("close", function() {
             // Called when the node is shutdown - eg on redeploy.
