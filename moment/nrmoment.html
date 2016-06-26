@@ -21,68 +21,77 @@
 <script type="text/x-red" data-template-name="moment">
     <!-- data-template-name identifies the node type this is for              -->
 
-    <!-- Each of the following divs creates a field in the edit dialog.       -->
-    <!-- Generally, there should be an input for each property of the node.   -->
-    <!-- The for and id attributes identify the corresponding property        -->
-    <!-- (with the 'node-input-' prefix).                                     -->
-    <!-- The available icon classes are defined Twitter Bootstrap glyphicons  -->
-
-    <!-- ** Unused templates for input types...
+    <!-- INPUT -->
     <div class="form-row">
-        <select id="node-input-action" style="width:95%; margin-right:5px;">
-        <option value="replace">Set the value of the message property</option>
-        <option value="change">Search/replace the value of the message property</option>
-        <option value="delete">Delete the message property</option>
+        <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input from</label>
+        <input type="text" id="node-input-input" style="width: 70%;" placeholder="payload">
+        <input type="hidden" id="node-input-inputType">
     </div>
-    </select>
-    <div class="form-row" id="node-reg-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-input-reg" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-reg" style="width: 70%;">Use regular expressions</label>
+    <!-- INPUT TIMEZONE -->
+    <div class="form-row">
+        <label for="node-input-inTz">Input Timezone</label>
+        <input type="text" id="node-input-inTz" placeholder="[determined by system]" style="width:70%;">
     </div>
-    -->
+    <!-- ADJUSTMENT -->
+    <div class="form-row">
+        <label for="node-input-adjAmount"> Adjustment</label>
+        <select id="node-input-adjDir" style="width:4em">
+          <option value="add">+</option>
+          <option value="subtract">-</option>
+        </select>
+        <input type="text" id="node-input-adjAmount" placeholder="0" style="width:25%;">
+        <select id="node-input-adjType" style="width:30%">
+          <option value="days">Days</option>
+          <option value="hours">Hours</option>
+          <option value="weeks">Weeks</option>
+          <option value="months">Months</option>
+          <option value="quarters">Quarters</option>
+          <option value="years">Years</option>
+          <option value="minutes">Minutes</option>
+          <option value="seconds">Seconds</option>
+          <option value="milliseconds">Milliseconds</option>
+        </select>
+    </div>
 
+    <!-- OUTPUT FORMAT -->
+    <br />
+    <div class="form-row">
+        <label for="node-input-format"><i class="fa fa-eye-open"></i> Output Format</label>
+        <input type="text" id="node-input-format" placeholder="ISO8601 (UTC)">
+    </div>
+    <!-- OUTPUT LOCALE -->
+    <div class="form-row">
+        <label for="node-input-locale"><i class="fa fa-flag"></i> Locale</label>
+        <input type="text" id="node-input-locale" placeholder="en">
+    </div>
+    <!-- OUTPUT TIMEZONE -->
+    <div class="form-row">
+        <label for="node-input-outTz">Output Tz</label>
+        <input type="text" id="node-input-outTz" placeholder="[determined by system]" style="width:70%;">
+    </div>
+    <!-- OUTPUT OBJECT -->
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-arrow-right"></i> Output to</label>
+        <input type="text" id="node-input-output" style="width: 70%;" placeholder="payload">
+        <input type="hidden" id="node-input-outputType">
+    </div>
+
+    <br/>
     <!-- TOPIC -->
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
         <input type="text" id="node-input-topic" placeholder="Topic">
     </div>
-
-    <!-- Input object -->
-    <div class="form-row">
-        <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input <i>msg.</i></label>
-        <input type="text" id="node-input-input" style="width: 53%;" placeholder="payload">
-    </div>
-    <!-- Format String -->
-    <div class="form-row">
-        <label for="node-input-format"><i class="fa fa-eye-open"></i> Format</label>
-        <input type="text" id="node-input-format" placeholder="ISO8601 or Date Object">
-    </div>
-    <div class="form-row">
-        <label for="node-input-locale"><i class="fa fa-flag"></i> Locale</label>
-        <input type="text" id="node-input-locale" placeholder="en">
-    </div>
-    <div class="form-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-input-fakeUTC" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-fakeUTC" style="width: 70%;">Consider UTC string as local</label>
-    </div>
-    <div class="form-tips">
-        Default output format is ISO8601 if the input is a Date object and is a Date object if the input is a string.
-        See the info sidebar for formatting details.
-    </div>
-    <!-- Output object -->
-    <div class="form-row">
-        <label for="node-input-output"><i class="fa fa-arrow-right"></i> Output <i>msg.</i></label>
-        <input type="text" id="node-input-output" style="width: 53%;" placeholder="payload">
-    </div>
-
-    <br/>
-    <!-- By convention, most nodes have a 'name' property. The following div -->
-    <!-- provides the necessary field. Should always be the last option      -->
+    <!-- NODE NAME - Should always be the last field -->
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-tips" style="font-size:83%">
+        See the info sidebar for formatting details. <br />
+        Use locale and format to change string output.<br />
+        See the info sidebar for several warnings about inputting strings.
     </div>
 </script>
 
@@ -90,57 +99,158 @@
 <!-- Next, some simple help text is provided for the node.                   -->
 <!-- The first <p> is used as the pop-up tool tip when hovering over pallette -->
 <script type="text/x-red" data-help-name="moment">
-    <p>Format an input date-time message object.</p>
     <p>
-        <b>Input</b> must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js can resolve to such</a>.
-        If the input is null, doesn not exist or is a blank string, the current Date/Time will be used. This can be used to add a current timestamp to a
-        flow of any kind easily.
+      Convert date/time object or string to nicely formatted text or date/time object.
     </p>
     <p>
-        <b>Output</b> is a formatted string or a Date object on <b>msg.payload</b> by default, change by setting the output field.
+      Uses the moment.js library. Now updated to use moment-timezone.js for full timezone and DST handling.
+      Also uses moment.parseFormat for string inputs and os-locale for output localisation.
     </p>
-    <p>Also adds msg.topic if specified otherwise passes it through.</p>
-    <p><b>Format</b> may be any <a href="http://momentjs.com/docs/#/displaying/format/">format string allowed by Moment.JS</a><br>
-    or one of the following (not case sensitive, alternatives in brackets):</p>
+    <p>
+      See the <a href="https://github.com/TotallyInformation/node-red-contrib-moment">readme file</a> for a change log.
+    </p>
+    <h2>Input</h2>
+    <p>
+      Must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js</a> can resolve
+      (with the help of <a href="https://github.com/gr2m/moment-parseformat">moment.parseFormat</a>).
+      If the input is null, does not exist or is a blank string, the current Date/Time will be used.
+    </p>
+    <p>
+      This can be used to add a current timestamp to a flow of any kind easily.
+    </p>
+    <h3>String input warnings</h3>
+    <p>
+      Note that parsing date/time strings is a hard problem. moment.parseFormat helps but it isn&apos;t magic.
+      We assume that ambiguous input dates such as <code>3/5/05</code> are in EU/UK format <code>dd/mm/yy</code> <i>unless</i>
+      either the input timezone is in <i>America</i> or the locale is set to <i>en_US</i>.
+    </p>
+    <h3>Input Timezone</h3>
+    <p>
+      If blank, the node will try to guess. If you have set your host system to a local timezone (e.g. <code>dpkg-reconfigure tzdata</code> on Linux)
+      then by default, input timestamps from the <code>inject</code> node will be in that timezone, otherwise they will be in UTC.
+      You can override this by specifying the full timezone in the format <code>region/location</code>,
+      e.g. <code>Europe/London</code>. Note that spellings are not validated, if it doesn&apos;t seem to work, check the valid timezone
+      list built in to moment-timezone.
+    </p>
+    <h2>Output</h2>
+    <p>
+      Is a formatted string if the output format is anything other than <code>date</code> or <code>object</code>
+      in which case, the output is a Javascript date object or an object as described below respectively.
+    </p>
+    <p>
+      Output string formatting is controlled by the Locale setting and the output format field.
+      Note that the output Timezone is ignored for ISO8601 output (the default), such output is <i>always</i>
+      in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
+    </p>
+    <p>
+      Specifying different input and output timezones allows you to translated between them.
+    </p>
+    <p>
+      The output msg will pass through the input msg.topic unless it is overridden. If the "Output to" field is changed
+      from the default <code>msg.payload</code>, the input msg.payload will also be passed through.
+    </p>
+    <h2>Output String Formatting</h2>
+    <p>
+      May be any <a href="http://momentjs.com/docs/#/displaying/format/">format string
+      allowed by Moment.JS</a> (try <code>LLL</code> for a localised output for example).
+      The formatting additions from moment-timezone are also allowed.<br>
+      In addition, the following (not case sensitive, alternatives in brackets) format strings are also allowed:
+    </p>
     <dl>
-        <dt>If left blank</dt>
-        <dd>If the input is a Javascript Date object, output in ISO8601 format. If the input is a recognised date string, output a Javascript Date object</dd>
-        <dt>ISO8601 (ISO)</dt>
-        <dd>ISO 8602 format, e.g. "2015-01-28T16:24:48+00:00"<br>This is the default if the input is a Javascript Date object</dd>
+        <dt>Blank (ISO8601, ISO)</dt>
+        <dd>
+          ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z"<br>
+          Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not
+          local, no matter what output timezone you may specify.
+        </dd>
         <dt>date (jsDate)</dt>
-        <dd>a Javascript Date object<br>This is the default if the input is a recognised date string</dd>
+        <dd>
+          A Javascript Date object<br>
+          This is the default if the input is a recognised date string
+        </dd>
+        <dt>object</dt>
+        <dd>
+          A Javascript object in the form <code>{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}</code>
+        </dd>
         <dt>fromNow (timeAgo)</dt>
-        <dd>e.g. 30 minutes ago</dd>
+        <dd>
+          Human readable output<br />
+          e.g. 30 minutes ago
+        </dd>
         <dt>calendar (aroundNow)</dt>
-        <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
-        <dt>duration</dt>
-        <dd>e.g. "8 minutes"</dd>
+        <dd>
+          Human readable alternative<br />
+          e.g. "Last Monday", "Tomorrow 2:30pm"<br />
+          Note that dates beyond a week from now are output as yyyy-mm-dd
+        </dd>
     </dl>
+    <p>
+      Note that with the exception of ISO8601, other formats are in the specified
+      timezone & DST. If not specified, the output timezone/DST is the same as the input.<br />
+      Use an output timezone of <code>UTC</code> to force output to that.
+    </p>
+    <p>
+      If output is shown in the wrong format, such as dates in US mm/dd/yy format, change the
+      output locale. For example, using <code>en_gb</code> will force short dates to output in
+      dd/mm/yy format. The default is <code>en</code> which moment assumes means the USA :-(
+    </p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
 <script type="text/javascript">
     RED.nodes.registerType('moment',{
-        category: 'formats',      // the palette category
-        color: '#E6E0F8',
-        defaults: {               // defines the editable properties of the node
-            name: {value:""},     //  along with default values.
-            topic: {value:""},    //, required:true}
-            input: {value:"payload"},
-            format: {value:""},
-            locale: {value:""},
-            output: {value:"payload"},
-            fakeUTC: {value: false }
-        },
-        inputs:1,               // set the number of inputs - only 0 or 1
-        outputs:1,              // set the number of outputs - 0 to n
-        // set the icon (held in icons dir below where you save the node)
-        icon: "timer.png",     // saved in  icons/myicon.png
-        label: function() {     // sets the default label contents
-            return this.name||this.topic||"Date/Time Formatter";
-        },
-        labelStyle: function() { // sets the class to apply to the label
-            return this.name?"node_label_italic":"";
+      category: 'formats',      // the palette category
+      color: '#E6E0F8',
+      defaults: {
+        name: {value:''},
+        topic: {value:''},
+        input: {value:''},
+        inputType: {value:'msg'},
+        inTz: {value:''},
+        adjAmount: {value:0, validate:RED.validators.number()},
+        adjType: {value:'days'},
+        adjDir: {value:'add'},
+        format: {value:''},
+        locale: {value:''},
+        output: {value:''},
+        outputType: {value:'msg'},
+        outTz: {value:''}
+      },
+      inputs:1,               // set the number of inputs - only 0 or 1
+      outputs:1,              // set the number of outputs - 0 to n
+      // set the icon (held in icons dir below where you save the node)
+      icon: 'timer.png',     // saved in  icons/myicon.png
+      label: function() {     // sets the default label contents
+          return this.name||this.topic||'Date/Time Formatter';
+      },
+      labelStyle: function() { // sets the class to apply to the label
+          return this.name?'node_label_italic':'';
+      },
+      oneditprepare: function() {
+        if (!this.inputType) {
+          this.inputType = 'msg';
         }
-    });
+        $('#node-input-input').typedInput({
+          default: 'msg',
+          types: ['msg','flow','global','date','str'],
+          typeField: $('#node-input-inputType')
+        });
+        if (!this.outputType) {
+          this.outputType = 'msg';
+        }
+        $('#node-input-output').typedInput({
+          default: 'msg',
+          types: ['msg','flow','global'],
+          typeField: $('#node-input-outputType')
+        });
+
+        // Get host locale and timezone
+        $.getJSON('contribapi/moment',function(data) {
+          console.log($('#node-input-locale').val());
+          if ( $('#node-input-inTz').val() === '' ) $('#node-input-inTz').val(data.tz);
+          if ( $('#node-input-outTz').val() === '' ) $('#node-input-outTz').val(data.tz);
+          if ( $('#node-input-locale').val() === '' ) $('#node-input-locale').val(data.locale);
+        });
+      } // --- end of oneditprepare --- //
+    }); // ---- end of RED.nodes.registerType ---- //
 </script>
