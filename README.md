@@ -1,68 +1,60 @@
 # node-red-contrib-moment
-[Node-Red](http://nodered.org) Node that produces a nicely formatted Date/Time string using the Moment.JS library.
+[Node-Red](http://nodered.org) Node that produces a nicely formatted Date/Time string using the Moment.JS library & is fully time zone/DST/locale aware.
 
-Based on thoughts from a [conversation in the Node-Red Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ).
+Based on thoughts from a [conversation in the Node-Red Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ). Updated with timezone/locale capabilities after Jaques44's initial work. Updated with +/- adjustments after [another conversion in the Google Group](https://groups.google.com/forum/#!topic/node-red/u3qoISFoKus).
 
 #Install
 
 Run the following command in the root directory of your Node-RED install
 
-	npm install node-red-contrib-moment
+    npm install node-red-contrib-moment
+
+If you want to install the original version:
+
+    npm install node-red-contrib-moment@1
 
 While in development, install with:
 
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 #Updates
-1.0.5 - Merged a pull request containing a Locale option for localisation. 2016-03-30
+- 2.0.0 - Significant rewrite, updated moment.js, got rid of all eval's, added adjustment calcs, added time zone and locale awareness. 2016-06-26
+- 1.0.9 - Merged in some fixes on Jacques44's contributions & acknowledged him in the package. Also fixed the npm readme. 2016-06-12
+- 1.0.5 - Merged a pull request containing a Locale option for localisation. 2016-03-30
+- 1.0.3 - First stable release. 2015-01-31
 
 #Usage
 
-The node expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
+The node generally expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
 object accordingly.
 
-There are 5 parameters to the node.
+Input and output time zones are settable as is the output locale. All of which default to the host systems tz/locale.
 
-1. *Topic* - as expected, if provided, msg.topic will be set on the output. Otherwise, any input topic is passed through
-2. *Input* - defines the Property on the input msg that carries the date/time. msg.payload by default.
-   Input must be either a Javascript Date object or a [date/time string that can be parsed by Moment.JS](http://momentjs.com/docs/#/parsing/string/).
+This allows the node to be used to translate from one time zone to another. It also will take into account daylight savings time (DST).
 
-   It tries to work out the input format and allows more variations to be recognised. Such as 'Thursday, February 6th, 2014 9:20pm'
+You can also apply an adjustment to the date/time by adding or subtracting an amount.
 
-   It can also be null, non-existant or an empty string, in which case it will be set to the current date/time. Useful for easily injecting the
-   current date/time from any trigger.
-3. *Format* - defines how the output should be formatted.
-   Can be any [format string recognised by Moment.JS](http://momentjs.com/docs/#/displaying/) or one of (alternative spellings in brackets, spellings are not case sensitive):
-    <dl>
-        <dt>If left blank</dt>
-        <dd>If the input is a Javascript Date object, output in ISO8601 format. If the input is a recognised date string, output a Javascript Date object</dd>
-        <dt>ISO8601 (ISO)</dt>
-        <dd>ISO 8602 format, e.g. "2015-01-28T16:24:48+00:00"<br>This is the default if the input is a Javascript Date object</dd>
-        <dt>date (jsDate)</dt>
-        <dd>a Javascript Date object<br>This is the default if the input is a recognised date string</dd>
-        <dt>fromNow (timeAgo)</dt>
-        <dd>e.g. 30 minutes ago</dd>
-        <dt>calendar (aroundNow)</dt>
-        <dd>e.g. "Last Monday", "Tomorrow 2:30pm"</dd>
-        <dt>duration</dt>
-        <dd>e.g. "8 minutes"</dd>        
-    </dl>
-4. *Output* - defines the property on the output msg that will carry the formatted date/time string (or Javascript object).
-5. *Name* - as usual, a unique name identifier for the node instance.
+See the node's built-in help for more details.
+
+#Depends on
+- [Moment.js](http://momentjs.com/docs) - Clever date/time handler for Node.js and browsers
+- [Moment-Timezone](http://momentjs.com/timezone/docs) - Adds timezone and locale awareness to Moment.js
+- [Moment-ParseFormat](https://github.com/gr2m/moment-parseformat) - Tries to interpret input strings as date/times and creates a format string that moment.js can use.
+- [os-locale](https://github.com/sindresorhus/os-locale) - interpets the host OS's locale. Works with Windows as well as Linux.
+- [Node-Red](http://nodered.org/docs/) - of course!
 
 #To Do
 
 Summary of things I'd like to do with the moment node (not necessarily immediately):
 
+* [ ] Add some additional nodes for doing date/time calculations
+* [ ] Add additional node for doing duration calculations
 * [ ] Add a combo box to the Format field with common formats pre-populated
-  Combo boxes are fiddly in HTML.
-* [ ] Improve the error messages when Moment.JS fails to interpret the input (say why)
-* [ ] Allow more input date/time formats - turns out Moment.JS doesn't really help here. At present, I see too many input failures from US/UK date formats, etc.
-  It would be great if I could parse "human" inputs like "tomorrow" and "2 minutes from now". We can output them now but not input them.
+* [x] Improve the error messages when Moment.JS fails to interpret the input (say why)
+* [x] Allow more input date/time formats - turns out Moment.JS doesn't really help here. At present, I see too many input failures from US/UK date formats, etc.
+  It would be great if I could parse "human" inputs like "tomorrow" and "2 minutes from now". We can output them now but not input them. As of v1.0.5, a localisation parameter is supported.
 
-  ~~Partly complete: Added the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat).~~ That failed, see code for details.
-
-  Maybe add a dropdown with a country code to give a hint.
+  ~~Partly complete: Added the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat). That failed, see code for details.~~ Now complete.
 
 #License
 
