@@ -231,7 +231,7 @@ module.exports = function(RED) {
     });
 
     // Tidy up if we need to
-    //node.on("close", function() {
+    //node.on('close', function() {
       // Called when the node is shutdown - eg on redeploy.
       // Allows ports to be closed, connections dropped etc.
       // eg: node.client.disconnect();
@@ -273,10 +273,10 @@ module.exports = function(RED) {
 
   // Create API listener: sends the host locale & timezone to the admin ui
   // NB: uses Express middleware on the admin server
-  RED.httpAdmin.get("/contribapi/moment", RED.auth.needsPermission('moment.read'), function(req,res) {
+  RED.httpAdmin.get('/contribapi/moment', RED.auth.needsPermission('moment.read'), function(req,res) {
     res.json({
-      "tz": hostTz,
-      "locale": hostLocale
+      'tz': hostTz,
+      'locale': hostLocale
     });
   });
 };
