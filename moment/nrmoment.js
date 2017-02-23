@@ -257,7 +257,7 @@ module.exports = function(RED) {
       try {
         switch ( outputType ) {
           case 'msg':
-            msg[output] = value;
+            RED.util.setMessageProperty(msg, output, value);
             break;
           case 'flow':
             node.context().flow.set(output, value);
