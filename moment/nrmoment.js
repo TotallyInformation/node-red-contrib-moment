@@ -85,7 +85,7 @@ module.exports = function(RED) {
         try {
           switch ( node.inputType ) {
             case 'msg':
-              inp = msg[node.input];
+              inp = RED.util.getMessageProperty(msg, node.input);
               break;
             case 'flow':
               inp = node.context().flow.get(node.input);
