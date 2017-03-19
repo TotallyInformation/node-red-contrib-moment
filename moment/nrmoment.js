@@ -135,40 +135,25 @@ module.exports = function(RED) {
               prefOrder = {preferredOrder: {'/': 'MDY', '.': 'DMY', '-': 'YMD'} };
             }
             inpFmt = parseFormat(inp, prefOrder);
-            /*
-            // Try to parse it - WARNING: THIS IS A MESS! Diff versions of JS interpret things differently!! https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-            try {
-              inp = new Date(inp);
-            } catch (err) {
-              inp = new Date();
-              node.warn('Input property, ' + node.inputType + '.' + node.input + ', contained an unparsable text string. Output has been set to NOW.');
-            }
-            // We still have to check if that actually produced a date! It might have returned a NaN
-            if ( !(inp instanceof Date) ) {
-              inp = new Date();
-              node.warn('Input property, ' + node.inputType + '.' + node.input + ', contained an unparsable text string. Output has been set to NOW.');
-            }
-            */
         }
       }
 
       // At this point, `inp` SHOULD be a Date object and safe to pass to moment.js
 
-      if ( !node.inTz ) node.inTz = hostTz;
-      if ( !node.outTz ) node.outTz = node.inTz;
+      if ( !node.inTz ) { node.inTz = hostTz; }
+      if ( !node.outTz ) { node.outTz = node.inTz; }
 
       // Get a Moment.JS date/time - NB: the result might not be
       //  valid since the input might not parse as a date/time
-      if ( inpFmt !== '' ) var mDT = moment.tz(inp, inpFmt, node.inTz);
-      else var mDT = moment.tz(inp, node.inTz);
+      var mDT;
+      if ( inpFmt !== '' ) { mDT = moment.tz(inp, inpFmt, node.inTz); }
+      else { mDT = moment.tz(inp, node.inTz); }
 
       // Adjust the date for input hacks if needed (e.g. input was "yesterday" or "tommorow")
-      if ( dtHack !== '' ) {
-        mDT.add(dtHack);
-      }
+      if ( dtHack !== '' ) { mDT.add(dtHack); }
 
       // JK: Added OS locale lookup
-      if ( !node.locale ) node.locale = hostLocale;
+      if ( !node.locale ) { node.locale = hostLocale; }
       // JK: Add a trap to Jaques44's locale code in case the output locale string is invalid
       try {
         // Jacques44 - set locale for localised output formats
@@ -246,7 +231,7 @@ module.exports = function(RED) {
     });
 
     // Tidy up if we need to
-    //node.on("close", function() {
+    //node.on('close', function() {
       // Called when the node is shutdown - eg on redeploy.
       // Allows ports to be closed, connections dropped etc.
       // eg: node.client.disconnect();
@@ -288,10 +273,10 @@ module.exports = function(RED) {
 
   // Create API listener: sends the host locale & timezone to the admin ui
   // NB: uses Express middleware on the admin server
-  RED.httpAdmin.get("/contribapi/moment", RED.auth.needsPermission('moment.read'), function(req,res) {
+  RED.httpAdmin.get('/contribapi/moment', RED.auth.needsPermission('moment.read'), function(req,res) {
     res.json({
-      "tz": hostTz,
-      "locale": hostLocale
+      'tz': hostTz,
+      'locale': hostLocale
     });
   });
 };

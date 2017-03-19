@@ -18,6 +18,7 @@ While in development, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 #Updates
+- 2.0.1 - Fix get/set of msg properties. 2016-07-08
 - 2.0.0 - Significant rewrite, updated moment.js, got rid of all eval's, added adjustment calcs, added time zone and locale awareness. 2016-06-26
 - 1.0.9 - Merged in some fixes on Jacques44's contributions & acknowledged him in the package. Also fixed the npm readme. 2016-06-12
 - 1.0.5 - Merged a pull request containing a Locale option for localisation. 2016-03-30
