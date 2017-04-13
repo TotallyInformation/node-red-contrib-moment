@@ -19,55 +19,62 @@
 
 <!-- First, the content of the edit dialog is defined.                       -->
 <script type="text/x-red" data-template-name="humanizer">
-    <!-- data-template-name identifies the node type this is for              -->
+  <!-- data-template-name identifies the node type this is for              -->
 
-    <!-- INPUT -->
-    <div class="form-row">
-        <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input variable</label>
-        <input type="text" id="node-input-input" style="width: 70%;" placeholder="varname in msg.payload or empty for all">
-    </div>
-    <!-- NODE NAME - Should always be the last field -->
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
+  <!-- INPUT -->
+  <div class="form-row">
+    <label for="node-input-input"><i class="fa fa-arrow-left"></i> Input variable</label>
+    <input type="text" id="node-input-input" style="width: 70%;" placeholder="varname in msg.payload or empty for all">
+  </div>
+  <!-- NODE NAME - Should always be the last field -->
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
 
-    <div class="form-tips" style="font-size:83%">
-        Specify which property on msg.payload to humanize or use msg.payload. <br />
-        The input is assumed to be in seconds since the event so +10 is 10 seconds ago.
-    </div>
+  <div class="form-tips" style="font-size:83%">
+    Specify which property on msg.payload to humanize or use msg.payload. <br />
+    The input must be in seconds since the event so +10 is 10 seconds ago.<br />
+    Only integer numbers are allowed.
+  </div>
 </script>
 
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <!-- The first <p> is used as the pop-up tool tip when hovering over pallette -->
 <script type="text/x-red" data-help-name="humanizer">
-    <p>
-      Humanize timespans in seconds.
-    </p>
-    <p>
-      Uses the humanize functionality in the moment.js library.
+  <p>
+    Humanize timespans in seconds.
+  </p>
+  <p>
+    Uses the humanize functionality in the moment.js library.
+  </p>
+  <p>
+    Input must be in integer seconds.
+  </p>
+  <p>
+    Contributed by <a href="https://github.com/Laro88">Laro88</a>
+  </p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->
 <script type="text/javascript">
-    RED.nodes.registerType('humanizer',{
-      category: 'formats',      // the palette category
-      color: '#E6E0F8',
-      defaults: {
-        name: {value:''},
-        input: {value:''}
-        
-      },
-      inputs:1,               // set the number of inputs - only 0 or 1
-      outputs:1,              // set the number of outputs - 0 to n
-      // set the icon (held in icons dir below where you save the node)
-      icon: 'timer.png',     // saved in  icons/myicon.png
-      label: function() {     // sets the default label contents
-          return this.name||'Humanizer';
-      },
-      labelStyle: function() { // sets the class to apply to the label
-          return this.name?'node_label_italic':'';
-      }
-    }); // ---- end of RED.nodes.registerType ---- //
+  RED.nodes.registerType('humanizer',{
+    category: 'formats',      // the palette category
+    color: '#E6E0F8',
+    defaults: {
+    name: {value:''},
+    input: {value:''}
+    },
+    inputs:1,               // set the number of inputs - only 0 or 1
+    outputs:1,              // set the number of outputs - 0 to n
+    // set the icon (held in icons dir below where you save the node)
+    icon: 'timer.png',     // saved in  icons/myicon.png
+    label: function() {     // sets the default label contents
+      return this.name||'Humanizer';
+    },
+    labelStyle: function() { // sets the class to apply to the label
+      return this.name?'node_label_italic':'';
+    }
+  }); // ---- end of RED.nodes.registerType ---- //
 </script>
