@@ -18,6 +18,8 @@ While in development, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 #Updates
+- 2.0.3 - Humanize helper node added, exposes moments humanize of timespan functionality (contributed by [Laro88](https://github.com/Laro88)),
+  Documentation updated to highlight issue with moment.js object handing (month is 0-11 not 1-12)
 - 2.0.2 - Minor fixes - change version to get latest moment.js. 2017-03-19
 - 2.0.1 - Fix get/set of msg properties. 2016-07-08
 - 2.0.0 - Significant rewrite, updated moment.js, got rid of all eval's, added adjustment calcs, added time zone and locale awareness. 2016-06-26
@@ -44,6 +46,9 @@ See the node's built-in help for more details.
 - [Moment-ParseFormat](https://github.com/gr2m/moment-parseformat) - Tries to interpret input strings as date/times and creates a format string that moment.js can use.
 - [os-locale](https://github.com/sindresorhus/os-locale) - interpets the host OS's locale. Works with Windows as well as Linux.
 - [Node-Red](http://nodered.org/docs/) - of course!
+
+#Humanize
+specify the input variable to execute humanize on, msg.payload.humanized will contain a humanized version of the specified span in seconds.
 
 #To Do
 
