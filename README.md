@@ -3,7 +3,7 @@
 
 Based on thoughts from a [conversation in the Node-Red Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ). Updated with timezone/locale capabilities after Jaques44's initial work. Updated with +/- adjustments after [another conversion in the Google Group](https://groups.google.com/forum/#!topic/node-red/u3qoISFoKus).
 
-#Install
+# Install
 
 Run the following command in the root directory of your Node-RED install
 
@@ -17,7 +17,7 @@ While in development, install with:
 
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
-#Updates
+# Updates
 - 2.0.3 - Humanize helper node added, exposes moments humanize of timespan functionality (contributed by [Laro88](https://github.com/Laro88)),
   Documentation updated to highlight issue with moment.js object handing (month is 0-11 not 1-12)
 - 2.0.2 - Minor fixes - change version to get latest moment.js. 2017-03-19
@@ -27,8 +27,9 @@ While in development, install with:
 - 1.0.5 - Merged a pull request containing a Locale option for localisation. 2016-03-30
 - 1.0.3 - First stable release. 2015-01-31
 
-#Usage
+# Usage
 
+## Moment
 The node generally expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
 object accordingly.
 
@@ -40,17 +41,17 @@ You can also apply an adjustment to the date/time by adding or subtracting an am
 
 See the node's built-in help for more details.
 
-#Depends on
+## Humanize
+Specify the input variable to execute humanize on, `msg.payload.humanized` will contain a humanized version of the specified span in seconds.
+
+# Depends on
 - [Moment.js](http://momentjs.com/docs) - Clever date/time handler for Node.js and browsers
 - [Moment-Timezone](http://momentjs.com/timezone/docs) - Adds timezone and locale awareness to Moment.js
 - [Moment-ParseFormat](https://github.com/gr2m/moment-parseformat) - Tries to interpret input strings as date/times and creates a format string that moment.js can use.
 - [os-locale](https://github.com/sindresorhus/os-locale) - interpets the host OS's locale. Works with Windows as well as Linux.
 - [Node-Red](http://nodered.org/docs/) - of course!
 
-#Humanize
-specify the input variable to execute humanize on, msg.payload.humanized will contain a humanized version of the specified span in seconds.
-
-#To Do
+# To Do
 
 Summary of things I'd like to do with the moment node (not necessarily immediately):
 
@@ -63,7 +64,7 @@ Summary of things I'd like to do with the moment node (not necessarily immediate
 
   ~~Partly complete: Added the [parseFormat plugin](https://github.com/gr2m/moment.parseFormat). That failed, see code for details.~~ Now complete.
 
-#License
+# License
 
 This code is Open Source under an Apache 2 License. Please see the [apache2-license.txt file](https://github.com/TotallyInformation/node-red-contrib-moment/apache2-license.txt) for details.
 
@@ -79,7 +80,7 @@ License for the specific language governing permissions and limitations under th
 
 [Julian Knight](https://uk.linkedin.com/in/julianknight2/) ([Totally Information](https://www.totallyinformation.com)), https://github.com/totallyinformation
 
-#Feedback and Support
+# Feedback and Support
 
 Please report any issues or suggestions via the [Github Issues list for this repository](https://github.com/TotallyInformation/node-red-contrib-moment/issues).
 
