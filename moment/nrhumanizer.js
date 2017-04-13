@@ -1,4 +1,3 @@
-/*jshint devel: true, node: true, indent: 2*/
 /**
 * Copyright (c) 2015 Julian Knight (Totally Information)
 *
@@ -15,12 +14,15 @@
 * limitations under the License.
 **/
 
+// JK Note: This code contributed by (Contributed by Laro88, https://github.com/Laro88)
+//          Tidying done by JK. Also removed dependency on validator which is vastly OTT for just ensuring an integer
+//          2017-04-13
+
 // Node for Node-Red that humalizes a timespan msg.payload.[] //TODO whould this be extended to work on Date objects as well and if so how?
 // It is helpful when working with ui things that informs users of time since last operation etc.
 
 // require moment.js (must be installed from package.js as a dependency)
 var moment = require('moment-timezone');
-var validator = require('validator');
 
 // Module name must match this nodes html file
 var moduleName = 'humanizer';
@@ -44,23 +46,25 @@ module.exports = function(RED) {
     node.on('input', function (msg) {
       'use strict'; // We will be using eval() so lets get a bit of safety using strict
 
-	  console.log(this.input);
-	  var v = msg.payload.hasOwnProperty(this.input) ? msg.payload[this.input] : ''+msg.payload;
-      v=''+v;
-	  if(!validator.isInt(v))
-		return node.warn('Invalid input for humanize call');
-	
-	
-		
-		var _humanized = moment.duration(v*1000).humanize();
-		if(typeof(msg.payload) == 'object'){
-			msg.payload.humanized = _humanized;
-		}
-		else{
-			msg.payload = {'humanized':_humanized};
-		}
+      //console.log(this.input);
+      var v = msg.payload.hasOwnProperty(this.input) ? msg.payload[this.input] : msg.payload;
+      // JK: Replace validator with native JS INT check, improve warning message
+      //v = v;
+      //if( !validator.isInt(v) ) {
+      if( ! Number.isInteger(v) ) {
+        return node.warn('Invalid input for humanize call, input must be an integer');
+      }
 
-		node.send(msg);
+      // JK: Pass seconds to duration - remove *1000 ms conversion
+      var _humanized = moment.duration(v, 'seconds').humanize();
+      if(typeof(msg.payload) == 'object'){
+        msg.payload.humanized = _humanized;
+      }
+      else{
+        msg.payload = {'humanized':_humanized};
+      }
+
+      node.send(msg);
     });
 
   } // ---- end of nodeGo function ---- //
