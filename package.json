@@ -3,11 +3,10 @@
   "version": "2.0.3",
   "description": "Node-Red Node that produces formatted Date/Time output using the Moment.JS library. Timezone, dst and locale aware.",
   "dependencies": {
-    "moment": "2.x",
-    "moment-parseformat": "^2.1.1",
-    "moment-timezone": "^0.5.4",
-    "os-locale": "^1.4.0",
-	  "validator":"^6.2.0"
+    "moment": "^2.18.1",
+    "moment-parseformat": "^2.2.0",
+    "moment-timezone": "^0.5.13",
+    "os-locale": "^2.0.0"
   },
   "author": {
     "name": "Julian Knight",
@@ -35,7 +34,7 @@
   "node-red": {
     "nodes": {
       "moment": "moment/nrmoment.js",
-	    "humanizer": "moment/nrhumanizer.js"
+      "humanizer": "moment/nrhumanizer.js"
     }
   },
   "main": "moment/nrmoment.js",
