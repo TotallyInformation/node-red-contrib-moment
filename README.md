@@ -42,7 +42,7 @@ You can also apply an adjustment to the date/time by adding or subtracting an am
 See the node's built-in help for more details.
 
 ## Humanize
-Specify the input variable to execute humanize on, `msg.payload.humanized` will contain a humanized version of the specified span in seconds.
+Specify the input variable to execute humanize on, `msg.payload.humanized` will contain a humanized version of the specified span in seconds. (Contributed by [Laro88](https://github.com/Laro88))
 
 # Depends on
 - [Moment.js](http://momentjs.com/docs) - Clever date/time handler for Node.js and browsers
