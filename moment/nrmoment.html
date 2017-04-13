@@ -171,6 +171,9 @@
         <dt>object</dt>
         <dd>
           A Javascript object in the form <code>{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}</code>
+          <br>
+          <em>WARNING</em>: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are.
+          I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
         </dd>
         <dt>fromNow (timeAgo)</dt>
         <dd>
