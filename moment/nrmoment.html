@@ -249,7 +249,7 @@
 
         // Get host locale and timezone
         $.getJSON('contribapi/moment',function(data) {
-          console.log($('#node-input-locale').val());
+          //console.log($('#node-input-locale').val());
           if ( $('#node-input-inTz').val() === '' ) $('#node-input-inTz').val(data.tz);
           if ( $('#node-input-outTz').val() === '' ) $('#node-input-outTz').val(data.tz);
           if ( $('#node-input-locale').val() === '' ) $('#node-input-locale').val(data.locale);

@@ -1,4 +1,3 @@
-/*jshint devel: true, node: true, indent: 2*/
 /**
 * Copyright (c) 2015 Julian Knight (Totally Information)
 *
@@ -142,12 +141,26 @@ module.exports = function(RED) {
 
       if ( !node.inTz ) { node.inTz = hostTz; }
       if ( !node.outTz ) { node.outTz = node.inTz; }
+      // Validate input and output timezones - @since 2.0.4
+      if ( moment.tz.zone(node.inTz) === null ) {
+        // tz invalid, warn and set to UTC
+        node.warn('Moment: Input Timezone Invalid, reset to UTC - see http://momentjs.com/timezone/docs/#/data-loading/')
+        node.inTz = 'UTC'
+      }
+      if ( moment.tz.zone(node.outTz) === null ) {
+        // tz invalid, warn and set to UTC
+        node.warn('Moment: Output Timezone Invalid, reset to UTC - see http://momentjs.com/timezone/docs/#/data-loading/')
+        node.outTz = 'UTC'
+      }
 
       // Get a Moment.JS date/time - NB: the result might not be
       //  valid since the input might not parse as a date/time
       var mDT;
-      if ( inpFmt !== '' ) { mDT = moment.tz(inp, inpFmt, node.inTz); }
-      else { mDT = moment.tz(inp, node.inTz); }
+      if ( inpFmt !== '' ) { 
+        mDT = moment.tz(inp, inpFmt, true, node.inTz);
+      } else { 
+        mDT = moment.tz(inp, true, node.inTz)
+      }
 
       // Adjust the date for input hacks if needed (e.g. input was "yesterday" or "tommorow")
       if ( dtHack !== '' ) { mDT.add(dtHack); }
