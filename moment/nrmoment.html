@@ -201,6 +201,12 @@
 
 <!-- Finally, the node type is registered along with all of its properties   -->
 <script type="text/javascript">
+    function tzValidate(val) {
+      // auto-correct the entry
+      //$('#node-input-inTz').val( val.replace(/^GMT|UTC/i, 'ETC/GMT') )
+      return true
+    }
+
     RED.nodes.registerType('moment',{
       category: 'formats',      // the palette category
       color: '#E6E0F8',
@@ -209,7 +215,7 @@
         topic: {value:''},
         input: {value:''},
         inputType: {value:'msg'},
-        inTz: {value:''},
+        inTz: {value:'', validate:tzValidate},
         adjAmount: {value:0, validate:RED.validators.number()},
         adjType: {value:'days'},
         adjDir: {value:'add'},
@@ -217,7 +223,7 @@
         locale: {value:''},
         output: {value:''},
         outputType: {value:'msg'},
-        outTz: {value:''}
+        outTz: {value:'', validate:tzValidate}
       },
       inputs:1,               // set the number of inputs - only 0 or 1
       outputs:1,              // set the number of outputs - 0 to n
@@ -230,6 +236,9 @@
           return this.name?'node_label_italic':'';
       },
       oneditprepare: function() {
+        // Make sure we can reference parent this in async fns
+        var _this = this
+
         if (!this.inputType) {
           this.inputType = 'msg';
         }
@@ -249,11 +258,25 @@
 
         // Get host locale and timezone
         $.getJSON('contribapi/moment',function(data) {
-          //console.log($('#node-input-locale').val());
+          // Save to parent object
+          _this.localeData = data
+
           if ( $('#node-input-inTz').val() === '' ) $('#node-input-inTz').val(data.tz);
           if ( $('#node-input-outTz').val() === '' ) $('#node-input-outTz').val(data.tz);
           if ( $('#node-input-locale').val() === '' ) $('#node-input-locale').val(data.locale);
         });
+
+        // Autocorrect timezone entries
+        $('#node-input-inTz').add('#node-input-outTz').blur( function(){
+          if( this.value === '' ) {
+            // Use saved locale data from parent object as default
+            this.value = _this.localeData.tz
+          } else {
+            // autocorrect common tz errors
+            this.value = this.value.replace(/^GMT|UTC/i, 'ETC/GMT')
+          }
+        })
+
       } // --- end of oneditprepare --- //
     }); // ---- end of RED.nodes.registerType ---- //
 </script>

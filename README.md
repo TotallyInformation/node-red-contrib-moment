@@ -18,6 +18,8 @@ While in development, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
+- 2.0.5 - Autocorrect common tz errors (e.g. UTC+4 should be ETC/GMT+4) & autofill default
+- 2.0.4 - Show warning for invalid timezone specifications
 - 2.0.3 - Humanize helper node added, exposes moments humanize of timespan functionality (contributed by [Laro88](https://github.com/Laro88)),
   Documentation updated to highlight issue with moment.js object handing (month is 0-11 not 1-12)
 - 2.0.2 - Minor fixes - change version to get latest moment.js. 2017-03-19
