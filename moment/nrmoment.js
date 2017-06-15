@@ -135,6 +135,9 @@ module.exports = function(RED) {
             }
             inpFmt = parseFormat(inp, prefOrder);
         }
+      } else if ( (typeof inp) === 'number' ) {
+        // @from 2017-06-15 IF inp is a number at this point, it needs turning into a date object
+        inp = new Date(inp)
       }
 
       // At this point, `inp` SHOULD be a Date object and safe to pass to moment.js
@@ -156,10 +159,11 @@ module.exports = function(RED) {
       // Get a Moment.JS date/time - NB: the result might not be
       //  valid since the input might not parse as a date/time
       var mDT;
-      if ( inpFmt !== '' ) { 
+      if ( inpFmt !== '' ) {
         mDT = moment.tz(inp, inpFmt, true, node.inTz);
-      } else { 
-        mDT = moment.tz(inp, true, node.inTz)
+      } else {
+        // @from 2017-06-15 change to momentjs meant having to add null parameter
+        mDT = moment.tz(inp, null, true, node.inTz)
       }
 
       // Adjust the date for input hacks if needed (e.g. input was "yesterday" or "tommorow")

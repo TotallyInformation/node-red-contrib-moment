@@ -18,6 +18,7 @@ While in development, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
+- 2.0.6 - Upstream change in MomentJS introduced bug when feeding with a timestamp (number), fixed
 - 2.0.5 - Autocorrect common tz errors (e.g. UTC+4 should be ETC/GMT+4) & autofill default
 - 2.0.4 - Show warning for invalid timezone specifications
 - 2.0.3 - Humanize helper node added, exposes moments humanize of timespan functionality (contributed by [Laro88](https://github.com/Laro88)),
@@ -57,7 +58,7 @@ Specify the input variable to execute humanize on, `msg.payload.humanized` will 
 
 Summary of things I'd like to do with the moment node (not necessarily immediately):
 
-* [ ] Add some additional nodes for doing date/time calculations
+* [ ] Add some additional nodes for doing date/time calculations - partly complete, can do simple add/subtract from main node
 * [ ] Add additional node for doing duration calculations
 * [ ] Add a combo box to the Format field with common formats pre-populated
 * [x] Improve the error messages when Moment.JS fails to interpret the input (say why)
