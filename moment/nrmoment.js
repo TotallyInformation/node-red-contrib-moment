@@ -166,6 +166,17 @@ module.exports = function(RED) {
         mDT = moment.tz(inp, null, true, node.inTz)
       }
 
+      // Fallback to JS built-in Date parsing, if not recognized by moment
+      if (!mDT.isValid()) {
+        var dtm = new Date(inp);
+        if (dtm === 'Invalid Date') {
+          node.warn('Unrecognized date string format => ' + inp);
+        }
+        else {
+          mDT = moment(dtm);
+        }
+      }
+
       // Adjust the date for input hacks if needed (e.g. input was "yesterday" or "tommorow")
       if ( dtHack !== '' ) { mDT.add(dtHack); }
 
