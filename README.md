@@ -18,6 +18,7 @@ While in development, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
+- 2.0.7 - Fallback to new Date(inp) when the date string is non-standard, like this output from the file stat() function: `2017-12-12 16:03:51.832427000 -0400` as well as the Twitter API default time string: `Mon Jan 08 21:24:37 +0000 2018` (contributed by [Steve Rickus](https://github.com/shrickus)). Update dependencies.
 - 2.0.6 - Upstream change in MomentJS introduced bug when feeding with a timestamp (number), fixed
 - 2.0.5 - Autocorrect common tz errors (e.g. UTC+4 should be ETC/GMT+4) & autofill default
 - 2.0.4 - Show warning for invalid timezone specifications
@@ -82,6 +83,15 @@ License for the specific language governing permissions and limitations under th
 # Author
 
 [Julian Knight](https://uk.linkedin.com/in/julianknight2/) ([Totally Information](https://www.totallyinformation.com)), https://github.com/totallyinformation
+
+# Contributors
+
+* [Vicary Archangel](https://github.com/vicary)
+* [Steve Rickus](https://github.com/shrickus)
+* [Jes Ramsing](https://github.com/Laro88)
+* [Jacques W](https://github.com/Jacques44)
+
+Many thanks for the contributions.
 
 # Feedback and Support
 
