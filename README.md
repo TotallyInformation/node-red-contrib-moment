@@ -7,15 +7,17 @@ Based on thoughts from a [conversation in the Node-Red Google Group](https://gro
 
 # Install
 
-Run the following command in the root directory of your Node-RED install
+You can always install the latest version via Node-RED's built-in "Manage Palette" menu. Alternatively ...
+
+Run the following command in the "userDir" folder. (typically `~/.node-red`)
 
     npm install node-red-contrib-moment
 
-If you want to install the original version:
+If you want to install the Node v4 compatible version:
 
-    npm install node-red-contrib-moment@1
+    npm install node-red-contrib-moment@2
 
-While in development, install with:
+To get the latest development version, install with:
 
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
