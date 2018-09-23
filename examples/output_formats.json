@@ -1,0 +1,208 @@
+[
+    {
+        "id": "81f2961f.f79bc8",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "topic": "OBJECT OUTPUT",
+        "input": "",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "object",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "Europe/London",
+        "x": 470,
+        "y": 860,
+        "wires": [
+            [
+                "3291e475.718dac"
+            ]
+        ]
+    },
+    {
+        "id": "56f5bf58.5bdd1",
+        "type": "inject",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 120,
+        "y": 860,
+        "wires": [
+            [
+                "81f2961f.f79bc8",
+                "4098f6f1.ce9bc8",
+                "6e58da3c.e794f4",
+                "9c736b61.f7e318",
+                "61fc7191.2c34f"
+            ]
+        ]
+    },
+    {
+        "id": "3291e475.718dac",
+        "type": "debug",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 870,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "4098f6f1.ce9bc8",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "topic": "JSDATE (date) OUTPUT",
+        "input": "",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "jsdate",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "Europe/London",
+        "x": 490,
+        "y": 900,
+        "wires": [
+            [
+                "3291e475.718dac"
+            ]
+        ]
+    },
+    {
+        "id": "6e58da3c.e794f4",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "topic": "CALENDAR (AROUNDNOW) OUTPUT",
+        "input": "",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "calendar",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "Europe/London",
+        "x": 540,
+        "y": 940,
+        "wires": [
+            [
+                "3291e475.718dac"
+            ]
+        ]
+    },
+    {
+        "id": "9c736b61.f7e318",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "topic": "FROMNOW (TIMEAGO) OUTPUT",
+        "input": "",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "fromnow",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "Europe/London",
+        "x": 520,
+        "y": 980,
+        "wires": [
+            [
+                "3291e475.718dac"
+            ]
+        ]
+    },
+    {
+        "id": "61fc7191.2c34f",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "topic": "ISO8601 (ISO) OUTPUT",
+        "input": "",
+        "inputType": "msg",
+        "inTz": "Europe/London",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "iso8601",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "Europe/London",
+        "x": 490,
+        "y": 1020,
+        "wires": [
+            [
+                "3291e475.718dac"
+            ]
+        ]
+    },
+    {
+        "id": "4d881b0f.0a5674",
+        "type": "inject",
+        "z": "533475c4.a28eac",
+        "name": "string yr 1st",
+        "topic": "",
+        "payload": "2017/6/14 20:10:10.276",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 130,
+        "y": 900,
+        "wires": [
+            [
+                "81f2961f.f79bc8",
+                "4098f6f1.ce9bc8",
+                "6e58da3c.e794f4",
+                "9c736b61.f7e318",
+                "61fc7191.2c34f"
+            ]
+        ]
+    },
+    {
+        "id": "3a2c909f.fd828",
+        "type": "inject",
+        "z": "533475c4.a28eac",
+        "name": "string complex",
+        "topic": "",
+        "payload": "Thu Jun 15 2017 18:02:13 GMT+0100 (GMT Summer Time)",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 140,
+        "y": 940,
+        "wires": [
+            [
+                "81f2961f.f79bc8",
+                "4098f6f1.ce9bc8",
+                "6e58da3c.e794f4",
+                "9c736b61.f7e318",
+                "61fc7191.2c34f"
+            ]
+        ]
+    }
+]

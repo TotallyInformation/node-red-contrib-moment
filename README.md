@@ -3,6 +3,8 @@
 
 Based on thoughts from a [conversation in the Node-Red Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ). Updated with timezone/locale capabilities after Jaques44's initial work. Updated with +/- adjustments after [another conversion in the Google Group](https://groups.google.com/forum/#!topic/node-red/u3qoISFoKus).
 
+**IMPORTANT NOTE FOR v3+**: Because this node uses the `moment` library and because of an upstream security issue requiring updates to underlying libraries, this version of the node is **dependent on Node.JS v6 or above**. It will not work with Node v4. If you are forced to use Node v4, please stay with v2x of this node. Otherwise, please consider upgrading to the current LTS version of Node.JS. Thanks.
+
 # Install
 
 Run the following command in the root directory of your Node-RED install
@@ -18,6 +20,10 @@ While in development, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
+- 3.0.0 - No feature changes, just upgrades of the dependent libraries. Note breaking change, minimum Node.JS version is now v6 or above.
+    - Documentation updated to clarify processing of different inputs.
+    - Fix: If input property contains `null`, output is now a warning + empty string in line with other invalid inputs. It was an incorrect timestamp.
+    - Examples added to Node-RED library to make testing easier.
 - 2.0.7 - Fallback to new Date(inp) when the date string is non-standard, like this output from the file stat() function: `2017-12-12 16:03:51.832427000 -0400` as well as the Twitter API default time string: `Mon Jan 08 21:24:37 +0000 2018` (contributed by [Steve Rickus](https://github.com/shrickus)). Update dependencies.
 - 2.0.6 - Upstream change in MomentJS introduced bug when feeding with a timestamp (number), fixed
 - 2.0.5 - Autocorrect common tz errors (e.g. UTC+4 should be ETC/GMT+4) & autofill default
@@ -34,14 +40,22 @@ While in development, install with:
 # Usage
 
 ## Moment
-The node generally expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or
-object accordingly.
+The node generally expects an input from the incoming msg. By default, this is msg.payload. If it is a recognisable date/time, it will apply a format and output the resulting string or object accordingly.
 
 Input and output time zones are settable as is the output locale. All of which default to the host systems tz/locale.
 
 This allows the node to be used to translate from one time zone to another. It also will take into account daylight savings time (DST).
 
 You can also apply an adjustment to the date/time by adding or subtracting an amount.
+
+If the **Input from**:
+
+* is "timestamp", the current date/time is used as input. Output will be processed as normal.
+* is "msg", "global" or "flow" and the given property is empty or does not exist, the current date/time is used as input. Output will be processed as normal.
+* is a property containing a numeric value, it will be assumed to be a UNIX time value (ms since 1970-01-01 I think). Output will be processed as normal.
+* is a property containing a string that is not a recognisable date/time (including `null`). Output is an empty string plus a debug warning.
+
+If the **output** property is not `msg.payload` the input `msg.payload` is retained in the output.
 
 See the node's built-in help for more details.
 

@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2015 Julian Knight (Totally Information)
+  Copyright (c) 2018 Julian Knight (Totally Information)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -105,98 +105,106 @@
     <p>
       Uses the moment.js library. Now updated to use moment-timezone.js for full timezone and DST handling.
       Also uses moment.parseFormat for string inputs and os-locale for output localisation.
+      This version requires Node v6+.
     </p>
     <p>
       See the <a href="https://github.com/TotallyInformation/node-red-contrib-moment">readme file</a> for a change log.
     </p>
-    <h2>Input</h2>
-    <p>
-      Must be either a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js</a> can resolve
-      (with the help of <a href="https://github.com/gr2m/moment-parseformat">moment.parseFormat</a>).
-      If the input is null, does not exist or is a blank string, the current Date/Time will be used.
-    </p>
-    <p>
-      This can be used to add a current timestamp to a flow of any kind easily.
-    </p>
-    <h3>String input warnings</h3>
-    <p>
-      Note that parsing date/time strings is a hard problem. moment.parseFormat helps but it isn&apos;t magic.
-      We assume that ambiguous input dates such as <code>3/5/05</code> are in EU/UK format <code>dd/mm/yy</code> <i>unless</i>
-      either the input timezone is in <i>America</i> or the locale is set to <i>en_US</i>.
-    </p>
+
+    <h3>Input</h3>
+      <p>
+        If the input property does not exist or is left blank, the current date/time will be assumed.
+        This can be used to add a current timestamp to a flow of any kind easily.
+      </p>
+      <p>Otherwise, the input is processed as follows:</p>
+      <ul>
+        <li>If input is "timestamp" or a JS datetime object or a <a href="http://momentjs.com/docs/#/parsing/">string that Moment.js</a> can resolve
+        (with the help of <a href="https://github.com/gr2m/moment-parseformat">moment.parseFormat</a>). It will be processed as normal.</li>
+        <li>If the input is null, is a blank string or a string that cannot be converted. The output will be an empty string.</li>
+      </ul>
+
+    <h4>String input warnings</h4>
+      <p>
+        Note that parsing date/time strings is a hard problem. moment.parseFormat helps but it isn&apos;t magic.
+        We assume that ambiguous input dates such as <code>3/5/05</code> are in EU/UK format <code>dd/mm/yy</code> <i>unless</i>
+        either the input timezone is in <i>America</i> or the locale is set to <i>en_US</i>.
+      </p>
+
     <h3>Input Timezone</h3>
-    <p>
-      If blank, the node will try to guess. If you have set your host system to a local timezone (e.g. <code>dpkg-reconfigure tzdata</code> on Linux)
-      then by default, input timestamps from the <code>inject</code> node will be in that timezone, otherwise they will be in UTC.
-      You can override this by specifying the full timezone in the format <code>region/location</code>,
-      e.g. <code>Europe/London</code>. Note that spellings are not validated, if it doesn&apos;t seem to work, check the valid timezone
-      list built in to moment-timezone.
-    </p>
-    <h2>Output</h2>
-    <p>
-      Is a formatted string if the output format is anything other than <code>date</code> or <code>object</code>
-      in which case, the output is a Javascript date object or an object as described below respectively.
-    </p>
-    <p>
-      Output string formatting is controlled by the Locale setting and the output format field.
-      Note that the output Timezone is ignored for ISO8601 output (the default), such output is <i>always</i>
-      in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
-    </p>
-    <p>
-      Specifying different input and output timezones allows you to translated between them.
-    </p>
-    <p>
-      The output msg will pass through the input msg.topic unless it is overridden. If the "Output to" field is changed
-      from the default <code>msg.payload</code>, the input msg.payload will also be passed through.
-    </p>
-    <h2>Output String Formatting</h2>
-    <p>
-      May be any <a href="http://momentjs.com/docs/#/displaying/format/">format string
-      allowed by Moment.JS</a> (try <code>LLL</code> for a localised output for example).
-      The formatting additions from moment-timezone are also allowed.<br>
-      In addition, the following (not case sensitive, alternatives in brackets) format strings are also allowed:
-    </p>
-    <dl>
-        <dt>Blank (ISO8601, ISO)</dt>
-        <dd>
-          ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z"<br>
-          Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not
-          local, no matter what output timezone you may specify.
-        </dd>
-        <dt>date (jsDate)</dt>
-        <dd>
-          A Javascript Date object<br>
-          This is the default if the input is a recognised date string
-        </dd>
-        <dt>object</dt>
-        <dd>
-          A Javascript object in the form <code>{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}</code>
-          <br>
-          <em>WARNING</em>: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are.
-          I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
-        </dd>
-        <dt>fromNow (timeAgo)</dt>
-        <dd>
-          Human readable output<br />
-          e.g. 30 minutes ago
-        </dd>
-        <dt>calendar (aroundNow)</dt>
-        <dd>
-          Human readable alternative<br />
-          e.g. "Last Monday", "Tomorrow 2:30pm"<br />
-          Note that dates beyond a week from now are output as yyyy-mm-dd
-        </dd>
-    </dl>
-    <p>
-      Note that with the exception of ISO8601, other formats are in the specified
-      timezone & DST. If not specified, the output timezone/DST is the same as the input.<br />
-      Use an output timezone of <code>UTC</code> to force output to that.
-    </p>
-    <p>
-      If output is shown in the wrong format, such as dates in US mm/dd/yy format, change the
-      output locale. For example, using <code>en_gb</code> will force short dates to output in
-      dd/mm/yy format. The default is <code>en</code> which moment assumes means the USA :-(
-    </p>
+      <p>
+        If blank, the node will try to guess. If you have set your host system to a local timezone (e.g. <code>dpkg-reconfigure tzdata</code> on Linux)
+        then by default, input timestamps from the <code>inject</code> node will be in that timezone, otherwise they will be in UTC.
+        You can override this by specifying the full timezone in the format <code>region/location</code>,
+        e.g. <code>Europe/London</code>. Note that spellings are not validated, if it doesn&apos;t seem to work, check the valid timezone
+        list built in to moment-timezone.
+      </p>
+
+    <h3>Output</h3>
+      <p>
+        Is a formatted string if the output format is anything other than <code>date</code> or <code>object</code>
+        in which case, the output is a Javascript date object or an object as described below respectively.
+      </p>
+      <p>
+        Output string formatting is controlled by the Locale setting and the output format field.
+        Note that the output Timezone is ignored for ISO8601 output (the default), such output is <i>always</i>
+        in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
+      </p>
+      <p>
+        Specifying different input and output timezones allows you to translated between them.
+      </p>
+      <p>
+        The output msg will pass through the input msg.topic unless it is overridden. If the "Output to" field is changed
+        from the default <code>msg.payload</code>, the input msg.payload will also be passed through.
+      </p>
+
+    <h3>Output String Formatting</h3>
+      <p>
+        May be any <a href="http://momentjs.com/docs/#/displaying/format/">format string
+        allowed by Moment.JS</a> (try <code>LLL</code> for a localised output for example).
+        The formatting additions from moment-timezone are also allowed.<br>
+        In addition, the following (not case sensitive, alternatives in brackets) format strings are also allowed:
+      </p>
+      <dl>
+          <dt>Blank (ISO8601, ISO)</dt>
+          <dd>
+            ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z"<br>
+            Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not
+            local, no matter what output timezone you may specify.
+          </dd>
+          <dt>date (jsDate)</dt>
+          <dd>
+            A Javascript Date object<br>
+            This is the default if the input is a recognised date string
+          </dd>
+          <dt>object</dt>
+          <dd>
+            A Javascript object in the form <code>{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}</code>
+            <br>
+            <em>WARNING</em>: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are.
+            I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
+          </dd>
+          <dt>fromNow (timeAgo)</dt>
+          <dd>
+            Human readable output<br />
+            e.g. 30 minutes ago
+          </dd>
+          <dt>calendar (aroundNow)</dt>
+          <dd>
+            Human readable alternative<br />
+            e.g. "Last Monday", "Tomorrow 2:30pm"<br />
+            Note that dates beyond a week from now are output as yyyy-mm-dd
+          </dd>
+      </dl>
+      <p>
+        Note that with the exception of ISO8601, other formats are in the specified
+        timezone & DST. If not specified, the output timezone/DST is the same as the input.<br />
+        Use an output timezone of <code>UTC</code> to force output to that.
+      </p>
+      <p>
+        If output is shown in the wrong format, such as dates in US mm/dd/yy format, change the
+        output locale. For example, using <code>en_gb</code> will force short dates to output in
+        dd/mm/yy format. The default is <code>en</code> which moment assumes means the USA :-(
+      </p>
 </script>
 
 <!-- Finally, the node type is registered along with all of its properties   -->

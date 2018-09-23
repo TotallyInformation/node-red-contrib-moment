@@ -1,5 +1,5 @@
 /**
-* Copyright (c) 2015 Julian Knight (Totally Information)
+* Copyright (c) 2018 Julian Knight (Totally Information)
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ module.exports = function(RED) {
     // Store local copies of the node configuration (as defined in the .html)
     this.topic = config.topic;
     this.input = config.input || 'payload'; // where to take the input from
-    this.inputType = config.inputType || 'msg'; // msg, flow or global
+    this.inputType = config.inputType || 'msg'; // msg, flow, global, timestamp or string
     this.fakeUTC = config.fakeUTC || false; // is the input UTC rather than local date/time?
     this.adjAmount = config.adjAmount || 0; // number
     this.adjType = config.adjType || 'days'; // days, hours, etc.
@@ -112,6 +112,8 @@ module.exports = function(RED) {
       // Final check for input being a string (which moment doesn't really want to handle)
       // NB: moment.js v3 will stop accepting strings. v2.7+ throws a warning.
       var dtHack = '', inpFmt = '';
+      // @from v3 2018-09-23: If input is `null`, change to empty string
+      if ( inp === null ) inp = '';
       if ( (typeof inp) === 'string' ) {
         inp = inp.trim();
         // Some string input hacks

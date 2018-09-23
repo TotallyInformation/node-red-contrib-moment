@@ -1,0 +1,131 @@
+[
+    {
+        "id": "7084db09.a4b114",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "UTC-4",
+        "topic": "UTC-4",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "ETC/GMT-4",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "ddd Do MMM YYYY HH:mm",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "ETC/GMT-4",
+        "x": 430,
+        "y": 1100,
+        "wires": [
+            [
+                "60262de3.bbacb4"
+            ]
+        ]
+    },
+    {
+        "id": "c553451b.3d2bb8",
+        "type": "inject",
+        "z": "533475c4.a28eac",
+        "name": "2017-05-28T21:00:00-04:00",
+        "topic": "",
+        "payload": "2017-05-28T21:00:00-04:00",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 180,
+        "y": 1100,
+        "wires": [
+            [
+                "7084db09.a4b114",
+                "d0b36f13.812dd",
+                "6414cdde.a898d4"
+            ]
+        ]
+    },
+    {
+        "id": "60262de3.bbacb4",
+        "type": "debug",
+        "z": "533475c4.a28eac",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 870,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "d0b36f13.812dd",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "UTC",
+        "topic": "UTC",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "etc/GMT-4",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "ddd Do MMM YYYY HH:mm",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "UTC",
+        "x": 430,
+        "y": 1140,
+        "wires": [
+            [
+                "60262de3.bbacb4"
+            ]
+        ]
+    },
+    {
+        "id": "6414cdde.a898d4",
+        "type": "moment",
+        "z": "533475c4.a28eac",
+        "name": "UTC+10",
+        "topic": "UTC+10",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "etc/GMT-4",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "ddd Do MMM YYYY HH:mm",
+        "locale": "en_GB",
+        "output": "",
+        "outputType": "msg",
+        "outTz": "etc/GMT+10",
+        "x": 440,
+        "y": 1180,
+        "wires": [
+            [
+                "60262de3.bbacb4"
+            ]
+        ]
+    },
+    {
+        "id": "f12f3bca.8c4f48",
+        "type": "inject",
+        "z": "533475c4.a28eac",
+        "name": "2017-05-28T21:00:00-04:00",
+        "topic": "",
+        "payload": "2017-05-28T21:00:00",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 180,
+        "y": 1180,
+        "wires": [
+            [
+                "6414cdde.a898d4",
+                "d0b36f13.812dd",
+                "7084db09.a4b114"
+            ]
+        ]
+    }
+]
