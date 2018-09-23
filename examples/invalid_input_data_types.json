@@ -1,6 +1,6 @@
 [
     {
-        "id": "b5772968.646c48",
+        "id": "320464b5.d0134c",
         "type": "moment",
         "z": "533475c4.a28eac",
         "name": "input: msg.payload",
@@ -16,16 +16,16 @@
         "output": "now",
         "outputType": "msg",
         "outTz": "America/New_York",
-        "x": 450,
-        "y": 420,
+        "x": 470,
+        "y": 400,
         "wires": [
             [
-                "c00ebbd6.15f268"
+                "72ed58b3.7f9178"
             ]
         ]
     },
     {
-        "id": "a2ea49dc.6517a8",
+        "id": "aceef80.40a4908",
         "type": "inject",
         "z": "533475c4.a28eac",
         "name": "",
@@ -36,16 +36,16 @@
         "crontab": "",
         "once": false,
         "onceDelay": "",
-        "x": 220,
-        "y": 360,
+        "x": 240,
+        "y": 340,
         "wires": [
             [
-                "b5772968.646c48"
+                "320464b5.d0134c"
             ]
         ]
     },
     {
-        "id": "c00ebbd6.15f268",
+        "id": "72ed58b3.7f9178",
         "type": "debug",
         "z": "533475c4.a28eac",
         "name": "",
@@ -54,12 +54,12 @@
         "console": false,
         "tostatus": false,
         "complete": "true",
-        "x": 630,
-        "y": 420,
+        "x": 650,
+        "y": 400,
         "wires": []
     },
     {
-        "id": "1498cc14.a15c14",
+        "id": "bbe21120.87815",
         "type": "inject",
         "z": "533475c4.a28eac",
         "name": "blank string",
@@ -70,16 +70,16 @@
         "crontab": "",
         "once": false,
         "onceDelay": "",
-        "x": 210,
-        "y": 400,
+        "x": 230,
+        "y": 380,
         "wires": [
             [
-                "b5772968.646c48"
+                "320464b5.d0134c"
             ]
         ]
     },
     {
-        "id": "1779577f.94eb19",
+        "id": "e49c12a.d2215f",
         "type": "inject",
         "z": "533475c4.a28eac",
         "name": "'test'",
@@ -90,16 +90,16 @@
         "crontab": "",
         "once": false,
         "onceDelay": "",
-        "x": 230,
-        "y": 440,
+        "x": 250,
+        "y": 420,
         "wires": [
             [
-                "b5772968.646c48"
+                "320464b5.d0134c"
             ]
         ]
     },
     {
-        "id": "6da87cd5.6787d4",
+        "id": "58881f8c.6cc45",
         "type": "inject",
         "z": "533475c4.a28eac",
         "name": "null",
@@ -110,26 +110,26 @@
         "crontab": "",
         "once": false,
         "onceDelay": "",
-        "x": 230,
-        "y": 480,
+        "x": 250,
+        "y": 460,
         "wires": [
             [
-                "b5772968.646c48"
+                "320464b5.d0134c"
             ]
         ]
     },
     {
-        "id": "d330922b.108d4",
+        "id": "43a381eb.dae01",
         "type": "comment",
         "z": "533475c4.a28eac",
         "name": "Pass different data types to a valid input property",
         "info": "",
-        "x": 540,
-        "y": 380,
+        "x": 560,
+        "y": 360,
         "wires": []
     },
     {
-        "id": "cb36dd1c.c40f5",
+        "id": "e2fe39e8.d9aba8",
         "type": "inject",
         "z": "533475c4.a28eac",
         "name": "Invalid Date String",
@@ -140,12 +140,22 @@
         "crontab": "",
         "once": false,
         "onceDelay": "",
-        "x": 190,
-        "y": 520,
+        "x": 210,
+        "y": 500,
         "wires": [
             [
-                "b5772968.646c48"
+                "320464b5.d0134c"
             ]
         ]
+    },
+    {
+        "id": "4b9bf042.f40d3",
+        "type": "comment",
+        "z": "533475c4.a28eac",
+        "name": "Expected Results",
+        "info": "Requests input from `msg.payload` but puts\noutput to `msg.now`.\n\n\n## Timestamp input\n\n```\n{\n  \"_msgid\":\"2792614c.a404ee\",\"topic\":\"\",\n  \"payload\":1537718900126,\n  \"now\":\"2018-09-23 12:08\"\n}\n```\n\n## All other inputs\n\n1. An output warning message\n    `The input property was NOT a recognisable date. Output will be a blank string`\n\n2. `msg.payload` set to input msg.payload\n3. `msg.now` set to empty string.\n",
+        "x": 460,
+        "y": 460,
+        "wires": []
     }
 ]
