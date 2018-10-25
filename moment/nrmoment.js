@@ -130,7 +130,6 @@ module.exports = function(RED) {
             dtHack = {days:+1};
             break;
           default:
-            node.log(node.inTz.split('/')[0]);
             var prefOrder = {preferredOrder: {'/': 'DMY', '.': 'DMY', '-': 'YMD'} };
             if ( (node.locale.toLowerCase().replace('-','_') === 'en_US') || (node.inTz.split('/')[0] === 'America') ) {
               prefOrder = {preferredOrder: {'/': 'MDY', '.': 'DMY', '-': 'YMD'} };
