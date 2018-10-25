@@ -22,6 +22,7 @@ To get the latest development version, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
+- 3.0.1 - **Bug Fix** Remove errant log statement.
 - 3.0.0 - No feature changes, just upgrades of the dependent libraries. Note breaking change, minimum Node.JS version is now v6 or above.
     - Documentation updated to clarify processing of different inputs.
     - Fix: If input property contains `null`, output is now a warning + empty string in line with other invalid inputs. It was an incorrect timestamp.
