@@ -2,14 +2,18 @@
 [Node-Red](http://nodered.org) Node that produces a nicely formatted Date/Time string using the Moment.JS library & is fully time zone/DST/locale aware.
 
 [![NPM Version](https://img.shields.io/npm/v/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
-[![GitHub stars](https://img.shields.io/github/stars/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/stargazers)
-[![NPM Downloads](https://img.shields.io/npm/dy/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
+[![NPM Total Downloads](https://img.shields.io/npm/dt/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
+[![NPM Downloads per month](https://img.shields.io/npm/dm/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
+[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/badges/shields.svg)](https://github.com/TotallyInformation/node-red-contrib-moment)
+[![GitHub last commit](https://img.shields.io/github/last-commit/totallyinformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment)
+[![GitHub stars](https://img.shields.io/github/stars/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/watchers)
+[![GitHub watchers](https://img.shields.io/github/watchers/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/stargazers)
+[![GitHub license](https://img.shields.io/github/license/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/blob/master/LICENSE)
+[![Min Node Version](https://img.shields.io/node/v/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
 [![Package Quality](http://npm.packagequality.com/shield/node-red-contrib-moment.png)](http://packagequality.com/#?package=node-red-contrib-moment)
 [![Dependencies](https://img.shields.io/david/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment)
-[![Min Node Version](https://img.shields.io/node/v/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
 [![Open Issues](https://img.shields.io/github/issues-raw/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/issues?q=is%3Aissue+is%3Aclosed)
-[![license](https://img.shields.io/github/license/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/blob/master/LICENSE)
 
 Based on thoughts from a [conversation in the Node-Red Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ). Updated with timezone/locale capabilities after Jaques44's initial work. Updated with +/- adjustments after [another conversion in the Google Group](https://groups.google.com/forum/#!topic/node-red/u3qoISFoKus).
 
