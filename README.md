@@ -1,6 +1,16 @@
 # node-red-contrib-moment
 [Node-Red](http://nodered.org) Node that produces a nicely formatted Date/Time string using the Moment.JS library & is fully time zone/DST/locale aware.
 
+[![NPM Version](https://img.shields.io/npm/v/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
+[![Min Node Version](https://img.shields.io/node/v/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
+[![GitHub stars](https://img.shields.io/github/stars/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/stargazers)
+[![NPM Downloads](https://img.shields.io/npm/dy/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
+[![Package Quality](http://npm.packagequality.com/badge/node-red-contrib-moment.png)](http://packagequality.com/#?package=node-red-contrib-moment)
+[![Dependencies](https://img.shields.io/david/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment)
+[![Open Issues](https://img.shields.io/github/issues-raw/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed-raw/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/issues?q=is%3Aissue+is%3Aclosed)
+[![license](https://img.shields.io/github/license/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/blob/master/LICENSE)
+
 Based on thoughts from a [conversation in the Node-Red Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ). Updated with timezone/locale capabilities after Jaques44's initial work. Updated with +/- adjustments after [another conversion in the Google Group](https://groups.google.com/forum/#!topic/node-red/u3qoISFoKus).
 
 **IMPORTANT NOTE FOR v3+**: Because this node uses the `moment` library and because of an upstream security issue requiring updates to underlying libraries, this version of the node is **dependent on Node.JS v6 or above**. It will not work with Node v4. If you are forced to use Node v4, please stay with v2x of this node. Otherwise, please consider upgrading to the current LTS version of Node.JS. Thanks.
