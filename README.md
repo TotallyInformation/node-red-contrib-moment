@@ -4,7 +4,6 @@
 [![NPM Version](https://img.shields.io/npm/v/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
 [![NPM Total Downloads](https://img.shields.io/npm/dt/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
 [![NPM Downloads per month](https://img.shields.io/npm/dm/node-red-contrib-moment.svg)](https://www.npmjs.com/package/node-red-contrib-moment)
-[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/badges/shields.svg)](https://github.com/TotallyInformation/node-red-contrib-moment)
 [![GitHub last commit](https://img.shields.io/github/last-commit/totallyinformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment)
 [![GitHub stars](https://img.shields.io/github/stars/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/watchers)
 [![GitHub watchers](https://img.shields.io/github/watchers/TotallyInformation/node-red-contrib-moment.svg)](https://github.com/TotallyInformation/node-red-contrib-moment/stargazers)
