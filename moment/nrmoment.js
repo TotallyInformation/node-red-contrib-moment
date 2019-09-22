@@ -28,6 +28,19 @@ var hostLocale = osLocale.sync()
 // Module name must match this nodes html file
 var moduleName = 'moment'
 
+/** Catch & correct input strings in ISO format with seconds >3dp
+ * since parseFormat has an unfixed bug (Issue #24)
+ * @param {string} inp Input date/time string
+ */
+function catchDp(inp) {
+    // If ISO string w/ seconds >3dp, then process else exit
+    if ( inp.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{4,}/) ) {
+        inp = inp.replace(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3})\d*(.*)/, '$1$2')
+    }
+
+    return inp
+}
+
 module.exports = function (RED) {
     'use strict'
 
@@ -82,7 +95,7 @@ module.exports = function (RED) {
 
             /** If the input property is blank, assume NOW as the required timestamp
              * or make sure that the node's input property actually exists on the input msg
-             * @type {string | Date}
+             * @type {(string|Date|null)}
              **/
             var inp = ''
             // If input is a blank string, use a Date object with Now DT
@@ -120,7 +133,10 @@ module.exports = function (RED) {
 
             // Final check for input being a string (which moment doesn't really want to handle)
             // NB: moment.js v3 will stop accepting strings. v2.7+ throws a warning.
-            var dtHack = '', inpFmt = ''
+            /** @type {(string|Object)} */
+            var dtHack = ''
+            /** @type {(string|Date)} */
+            var inpFmt = ''
             // @from v3 2018-09-23: If input is `null`, change to empty string
             if (inp === null) inp = ''
             if ((typeof inp) === 'string') {
@@ -139,6 +155,9 @@ module.exports = function (RED) {
                         dtHack = { days: +1 }
                         break
                     default:
+                        // Catch string ISO inputs with seconds >3dp which parseFormat treats incorrectly (Issue #24)
+                        inp = catchDp(inp)
+                        // Try to guess locale so as to guess whether DMY or MDY
                         var prefOrder = { preferredOrder: { '/': 'DMY', '.': 'DMY', '-': 'YMD' } }
                         if ((node.locale.toLowerCase().replace('-', '_') === 'en_US') || (node.inTz.split('/')[0] === 'America')) {
                             prefOrder = { preferredOrder: { '/': 'MDY', '.': 'DMY', '-': 'YMD' } }
