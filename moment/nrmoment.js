@@ -55,9 +55,16 @@ module.exports = function (RED) {
         var node = this
 
         // respond to inputs....
-        node.on('input', function (msg) {
+        /** @since v3.1.0, amended ready for Node-RED v1 */
+        node.on('input', function (msg, send, done) {
             'use strict' // We will be using eval() so lets get a bit of safety using strict
 
+            // If this is pre-1.0, 'send' will be undefined, so fallback to node.send
+            send = send || node.send
+            // If this is pre-1.0, 'done' will be undefined, so fallback to dummy function
+            done = done || function(){}
+
+            
             // If the node's topic is set, copy to output msg
             if (node.topic !== '') {
                 msg.topic = node.topic
@@ -73,8 +80,10 @@ module.exports = function (RED) {
                 node.warn('Output Type field is REQUIRED, currently blank, set to msg')
             }
 
-            // If the input property is blank, assume NOW as the required timestamp
-            // or make sure that the node's input property actually exists on the input msg
+            /** If the input property is blank, assume NOW as the required timestamp
+             * or make sure that the node's input property actually exists on the input msg
+             * @type {string | Date}
+             **/
             var inp = ''
             // If input is a blank string, use a Date object with Now DT
             if (node.input === '') {
@@ -256,7 +265,9 @@ module.exports = function (RED) {
             }
 
             // Send the output message
-            node.send(msg)
+            send(msg)
+            // Finished processing input msg (NR 1+)
+            done()
         })
 
         // Tidy up if we need to
