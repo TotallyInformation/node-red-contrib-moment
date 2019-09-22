@@ -6,9 +6,11 @@
   },
   "extends": "eslint:recommended",
   "rules": {
+    "no-console": 0,
     "indent": [
       "warn",
-      [2, 2]
+      4,
+      {"SwitchCase": 1}
     ],
     "linebreak-style": [
       "error",
@@ -21,6 +23,8 @@
     "semi": [
       "warn",
       "never"
-    ]
+    ],
+    "comma-dangle":"off",
+    "no-unused-vars": "warn"
   }
 }
