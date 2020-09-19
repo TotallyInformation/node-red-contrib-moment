@@ -1,6 +1,7 @@
 - 3.1.0 - Documentation rework
     - Explanation extended, examples added
     - Testing flows moved from subdir examples\ to subdir testing\
+    - .html help extended
 - 3.0.2 - Update dependencies to latest versions.
 - 3.0.1 - **Bug Fix** Remove errant log statement.
 - 3.0.0 - No feature changes, just upgrades of the dependent libraries. Note breaking change, minimum Node.JS version is now v6 or above.

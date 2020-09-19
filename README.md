@@ -1,60 +1,8 @@
-# xxx
-
-## moments node
-Features
-- Input timezone nur, wenn textuelle Interpretation. Bei timestamp als Zahl nicht notwendig, da timestamp UTC sein sollte
-- Input timezone wird von lokaler Timezone übernommen, wenn nichts anderes eingegeben wird ([determined by system])
-- Wenn Output format leer ist, kommt UTC im Zulu-Format, egal was in Output TZ bzw. Locale steht
-  - Zulu-Format: https://momentjs.com/docs/#/displaying/as-iso-string/  (Beispiel: 2013-02-04T22:44:30.652Z)
-
-- Output Format: Siehe dort: https://momentjs.com/docs/#/displaying/format/
-- Timezones (tzdata): Siehe z.B. dort: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-- Timestamp ist in ms seit 01.01.1970: https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/. Dies ist das Format, das ein Inject-Node bei Output **timestamp** ausgibt
-
-
-
-##### Blank (ISO8601, ISO)  
-ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z"  
-Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.  
-
-##### date (jsDate)
-A Javascript Date object
-This is the default if the input is a recognised date string object  
-A Javascript object in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`
-
-WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
-
-##### fromNow (timeAgo)
-Human readable output, e.g. 30 minutes ago
-
-##### calendar (aroundNow)
-Human readable alternative, e.g. "Last Monday", "Tomorrow 2:30pm"  
-Note that dates beyond a week from now are output as yyyy-mm-dd
-
-
-
-
-## humanizer node
-- setzt Zeitdauern in Text um: Integer -> String
-- macht Textformat (Ausgabesprache) an locale des PCs fest, d.h. en_EN, de_DE,...
-  - Ausgabesprache ist nicht einstellbar
-
-
-
-- Changelog.md oder .txt einführen
-- package.json inkrementieren
-
+# xxx ToDo
 
 ## .html
-- Input Timezone vs. Output Tz im Text: -> "Output Timezone" ändern
 - Hilfetext prüfen/korrigieren/erweitern
-  - moments node
-  - humanizer node
-
-
-
-References: ggfs. siehe unten "depends on"
-
+  - Nur noch moments node. humanizer node ist erledigt.
 
 
 # node-red-contrib-moment
@@ -90,17 +38,12 @@ Based on thoughts from a [conversation in the Node-RED Google Group](https://gro
 - Otherwise, please consider upgrading to the current LTS version of Node.JS
 
 
-References:
-- [Moment.js](https://momentjs.com/docs/) library
-- [Zulu](https://momentjs.com/docs/#/displaying/as-iso-string/) time format
-- [Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones/) (tzdata)
-
-
 <a name="installation"></a>
 # Installation
 
 <a name="installation_in_node-red"></a>
 ## In Node-RED (preferred)
+
 * Via Manage Palette -> Search for "node-red-contrib-moment"
 
 <a name="installation_in_a_shell"></a>
@@ -140,26 +83,89 @@ You can also apply an adjustment to the date/time by adding or subtracting an am
 
 **Fig. 3:** Properties of node *moment*
 
+
+### *Input from* and *Output to*
+These two configuration properties define the `msg` properties in which the input and output data are read from resp. written to. Default is `msg.payload`.
+
+### *Input Timezone* and *Output Timezone*
+#### *Input Timezone*
+This property defines the timezone of the time fed via the input `msg`. Internally the input time is converted into UTC for further processing.  
+The format of *Input Timezone* is in the format *region/location*, e.g. Europe/London. See also timezone lists e.g. built in to [moment-timezone](https://momentjs.com/timezone/) or given in [wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+
+**Note**: Spellings are not validated, if it doesn't seem to work, check the validity of *region/location* with these timezone lists.  
+
+The following behaviour is valid:
+- If the input data contains a Node-RED timestamp this property is ommitted
+  - If the host system has a local timezone set (e.g. `dpkg-reconfigure tzdata` on Linux), the input timestamp is related to this local timezone.
+  - If the host system has no local timezone set, the input timestamp is related to UTC.
+- If the input data contains an interpretable string, this property is used (to convert internally to UTC).
+
+
+#### *Output Timezone*
+This property defines the timezone of the time emitted via the output `msg`.
+The format of *Output Timezone* is described above (see *Input Timezone*).
+
+The following behaviour is valid:
+- If *Output Format* is left blank, the output format is in 'Zulu' format, independent of the contents of the additional properties *Output Timezone* and *Locale*.
+
+  Zulu format see: https://momentjs.com/docs/#/displaying/as-iso-string/  
+  (Example: 2013-02-04T22:44:30.652Z)
+
+
+### *Adjustment*
+Using this property, the time can be adjusted by a manually given value. Adjustments can be positive or negative and can be given in milliseconds, seconds, minutes, hours, days, weeks, months, quarters, years.
+
+
 # xxx
 
-### 'Input from' and 'Output to'
+### *Output Format* and *Locale*
+- Output Format: Siehe dort: https://momentjs.com/docs/#/displaying/format/
+
+May be any format string allowed by Moment.JS (try LLL for a localised output for example). The formatting additions from moment-timezone are also allowed.
+In addition, the following (not case sensitive, alternatives in brackets) format strings are also allowed:
+
+##### Blank (ISO8601, ISO)  
+ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z"  
+Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.  
+
+##### date (jsDate)
+A Javascript Date object
+This is the default if the input is a recognised date string object  
+A Javascript object in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`
+
+WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
+
+##### fromNow (timeAgo)
+Human readable output, e.g. 30 minutes ago
+
+##### calendar (aroundNow)
+
+References: ggfs. siehe unten "depends on"
 
 
-### 'Input Timezone' and 'Output Timezone'
+Human readable alternative, e.g. "Last Monday", "Tomorrow 2:30pm"  
+Note that dates beyond a week from now are output as yyyy-mm-dd
 
 
-### 'Adjustment'
+Note that with the exception of ISO8601, other formats are in the specified timezone & DST. If not specified, the output timezone/DST is the same as the input.
+Use an output timezone of UTC to force output to that.
+
+If output is shown in the wrong format, such as dates in US mm/dd/yy format, change the output locale. For example, using en_gb will force short dates to output in dd/mm/yy format. The default is en which moment assumes means the USA :-(
 
 
-### 'Output Format' and 'Locale'
 
 
-### Additional topic
+### *Topic* (additional topic)
 
 xxx Zus. Topic ohne Inhalt
 
 
 ## Input of node *moment*
+
+Kann sein:
+- timestamp
+- JSON, z.B. {"years":2020,"months":1,"date":11,"hours":5,"minutes":6,"seconds":7,"milliseconds":8}
+- String, z.B. "19.09.2020 14:35" or "2020-09-19 14:36:25.217" or Samstag, 19. September 2020 14:36
 
 If the **Input from**:
 
@@ -168,11 +174,40 @@ If the **Input from**:
 * is a property containing a numeric value, it will be assumed to be a UNIX time value (ms since 1970-01-01 I think). Output will be processed as normal.
 * is a property containing a string that is not a recognisable date/time (including `null`). Output is an empty string plus a debug warning.
 
+
+- Timestamp ist in ms seit 01.01.1970: https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/. Dies ist das Format, das ein Inject-Node bei Output **timestamp** ausgibt
+
+
+If the input property does not exist or is left blank, the current date/time will be assumed. This can be used to add a current timestamp to a flow of any kind easily.
+
+Otherwise, the input is processed as follows:
+
+   If input is "timestamp" or a JS datetime object or a string that Moment.js can resolve (with the help of moment.parseFormat). It will be processed as normal.
+   If the input is null, is a blank string or a string that cannot be converted. The output will be an empty string.
+
+String input warnings
+
+Note that parsing date/time strings is a hard problem. moment.parseFormat helps but it isn't magic. We assume that ambiguous input dates such as 3/5/05 are in EU/UK format dd/mm/yy unless either the input timezone is in America or the locale is set to en_US.
+
+
+
+
 ## Outputs of node *moment*
 
 If the **output** property is not `msg.payload` the input `msg.payload` is retained in the output.
 
 See the node's built-in help for more details.
+
+Is a formatted string if the output format is anything other than date or object in which case, the output is a Javascript date object or an object as described below respectively.
+
+Output string formatting is controlled by the Locale setting and the output format field. Note that the output Timezone is ignored for ISO8601 output (the default), such output is always in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
+
+Specifying different input and output timezones allows you to translated between them.
+
+The output msg will pass through the input msg.topic unless it is overridden. If the "Output to" field is changed from the default msg.payload, the input msg.payload will also be passed through.
+
+
+
 
 
 # Usage of node *humanizer*
@@ -183,6 +218,10 @@ Specify the input variable to execute humanize on, `msg.payload.humanized` will 
 
 ![humanizer-node-settings](images/humanizer-node-configuration.png "Node humanizer properties")  
 **Fig. xxx:** Properties of node *humanizer*
+
+- setzt Zeitdauern in Text um: Integer -> String
+- macht Textformat (Ausgabesprache) an locale des PCs fest, d.h. en_EN, de_DE,...
+  - Ausgabesprache ist nicht einstellbar
 
 
 ### 'Input variable'
@@ -198,15 +237,39 @@ Specify the input variable to execute humanize on, `msg.payload.humanized` will 
 
 
 # Examples
+***
+**Remark**: Example flows are present in the examples subdirectory. In Node-RED they can be imported via the import function and then selecting *Examples* in the vertical tab menue.  
+All example flows can also be found in the examples folder of this package.
+***
+
+
+## Usage of the *moment* node
+The basic usage is shown in Fig. 2. The following examples shall give an overview how to use the rich configuration properties.
+
+### Usage of configuration properties *Output Timezone*, *Output Format* and *Adjustment*
+
+
+### Usage of configuration property *Input Timezone*
+
+
+### Usage of configuration properties *Output Format* and *Locale*
+
+
+## Usage of the *humanize* node
 
 
 
 # Depends on
 - [Moment.js](http://momentjs.com/docs) - Clever date/time handler for Node.js and browsers
 - [Moment-Timezone](http://momentjs.com/timezone/docs) - Adds timezone and locale awareness to Moment.js
+- [Zulu](https://momentjs.com/docs/#/displaying/as-iso-string/) time format
+- [Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones/) (tzdata)
 - [Moment-ParseFormat](https://github.com/gr2m/moment-parseformat) - Tries to interpret input strings as date/times and creates a format string that moment.js can use.
 - [os-locale](https://github.com/sindresorhus/os-locale) - interpets the host OS's locale. Works with Windows as well as Linux.
 - [Node-RED](http://nodered.org/docs/) - of course!
+
+
+
 
 # To Do
 
