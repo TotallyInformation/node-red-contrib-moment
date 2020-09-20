@@ -116,44 +116,58 @@ The following behaviour is valid:
 Using this property, the time can be adjusted by a manually given value. Adjustments can be positive or negative and can be given in milliseconds, seconds, minutes, hours, days, weeks, months, quarters, years.
 
 
-# xxx
-
 ### *Output Format* and *Locale*
-- Output Format: Siehe dort: https://momentjs.com/docs/#/displaying/format/
+These two properties in combination define the output format emitted in the output `msg`.  
 
-May be any format string allowed by Moment.JS (try LLL for a localised output for example). The formatting additions from moment-timezone are also allowed.
-In addition, the following (not case sensitive, alternatives in brackets) format strings are also allowed:
-
-##### Blank (ISO8601, ISO)  
-ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z"  
-Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.  
-
-##### date (jsDate)
-A Javascript Date object
-This is the default if the input is a recognised date string object  
-A Javascript object in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`
-
-WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
-
-##### fromNow (timeAgo)
-Human readable output, e.g. 30 minutes ago
-
-##### calendar (aroundNow)
-
-References: ggfs. siehe unten "depends on"
-
-
-Human readable alternative, e.g. "Last Monday", "Tomorrow 2:30pm"  
-Note that dates beyond a week from now are output as yyyy-mm-dd
-
-
+#### *Output Format*
+The *Output Format* property defines the format and is described in the [moment.js displaying format section](https://momentjs.com/docs/#/displaying/format/).  
+It may be any format string defined by moment.js. The formatting additions from *moment-timezone* are also allowed.  In addition, further (not case sensitive, alternatives in brackets) format strings are also allowed.  
 Note that with the exception of ISO8601, other formats are in the specified timezone & DST. If not specified, the output timezone/DST is the same as the input.
 Use an output timezone of UTC to force output to that.
 
-If output is shown in the wrong format, such as dates in US mm/dd/yy format, change the output locale. For example, using en_gb will force short dates to output in dd/mm/yy format. The default is en which moment assumes means the USA :-(
 
 
+##### Format string defined by moment.js
+The format string defined by moment.js basically has two options:
+- ***Manual given format string:*** This is a string where the time/date parts are represented by characters. Also text parts are allowed. Examples:
+  - "DD.MM.YYYY HH:mm" gives *20.09.2020 08:30*
+  - "dddd, MMMM Do YYYY, h:mm:ss a" gives *Sunday, February 14th 2010, 3:25:50 pm*
+  - "[Today is] dddd" gives *Today is Sunday*
+  - "[Date: ]YYYY-MM-DD  [Time: ]HH:mm:ss" gives *Date: 2020-09-20  Time: 08:31:45*
+  - ["fromNow"](https://momentjs.com/docs/#/displaying/fromnow/) gives *in a month*
+  - ["calendar"](https://momentjs.com/docs/#/displaying/calendar-time/) gives *Last Monday*
+- ***Predefined localized string:*** This is a string which defines a localized format. Examples:
+  - "LLL" gives *October 20, 2020 8:33 AM*
+  - "LTS" gives *8:30:25 PM*
+  - "llll" gives *Thu, Sep 4, 1986 8:30 PM*
 
+For more options see https://momentjs.com/docs/#/displaying/format/.
+
+##### Format string is left blank resp. is "ISO8601" or "ISO"  
+In this case the output is in ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z".  
+Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.  
+
+##### Format string is "date" resp. "jsDate"
+This is a Javascript Date object in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`. It may be used for manual (fixed) data/time values.
+
+WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
+
+##### Format string is "fromNow" resp. "timeAgo"
+This is a human readable output, e.g. *30 minutes ago*.
+
+##### Format string is "calendar" resp. "aroundNow"
+This is a human readable alternative, e.g. *Last Monday*, *Tomorrow 2:30pm*.
+Note that dates beyond a week from now are output as yyyy-mm-dd.
+
+
+#### *Locale*
+In case of a textual output string contents the *Locale* property defines the language of the textual parts (e.g. "October" vs. "Oktober" vs. "ottobre").
+
+If the output is shown in the wrong format, such as dates in US mm/dd/yy format, change the output locale. For example, using en_gb will force short dates to output in dd/mm/yy format. The default is en which moment assumes means the USA :-(
+
+See also [Locale Helper](https://lh.2xlibre.net/locales/). 
+
+# xxx
 
 ### *Topic* (additional topic)
 
@@ -265,7 +279,7 @@ The basic usage is shown in Fig. 2. The following examples shall give an overvie
 - [Zulu](https://momentjs.com/docs/#/displaying/as-iso-string/) time format
 - [Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones/) (tzdata)
 - [Moment-ParseFormat](https://github.com/gr2m/moment-parseformat) - Tries to interpret input strings as date/times and creates a format string that moment.js can use.
-- [os-locale](https://github.com/sindresorhus/os-locale) - interpets the host OS's locale. Works with Windows as well as Linux.
+- [Locale Helper](https://lh.2xlibre.net/locales/) - lists locale options
 - [Node-RED](http://nodered.org/docs/) - of course!
 
 
