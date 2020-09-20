@@ -165,45 +165,31 @@ In case of a textual output string contents the *Locale* property defines the la
 
 If the output is shown in the wrong format, such as dates in US mm/dd/yy format, change the output locale. For example, using en_gb will force short dates to output in dd/mm/yy format. The default is en which moment assumes means the USA :-(
 
-See also [Locale Helper](https://lh.2xlibre.net/locales/). 
+See also [Locale Helper](https://lh.2xlibre.net/locales/).
 
-# xxx
 
 ### *Topic* (additional topic)
+Using this property you can add an additional topic to the output `msg.topic`.
+A resulting `msg` may be (value "myTopicString"):
 
-xxx Zus. Topic ohne Inhalt
+```json
+{"_msgid":"b16b00b5.bada55","payload":"2020-09-20T12:47:55.143Z","topic":"myTopicString"}
+```
 
 
 ## Input of node *moment*
 
-Kann sein:
-- timestamp
-- JSON, z.B. {"years":2020,"months":1,"date":11,"hours":5,"minutes":6,"seconds":7,"milliseconds":8}
-- String, z.B. "19.09.2020 14:35" or "2020-09-19 14:36:25.217" or Samstag, 19. September 2020 14:36
+Input values in the object **Input from** can be the following:
 
-If the **Input from**:
+- ***timestamp:*** The current date/time is used as input.
+- ***msg***, ***global*** or ***flow*** and the given property is empty or does not exist: The current date/time is used as input.
+- ***JSON date time object:*** This data time object may contain the following elements: *years*, *quarters*, *months*, *weeks*, *days*, *hours*, *minutes*, *seconds*, *milliseconds*.   
+  <br>Example: `{"years":2020,"months":1,"date":11,"hours":5,"minutes":6}`.
+- ***a property containing a numeric value:*** The value will be assumed to be a [UNIX time value](https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/) (ms since 1970-01-01). Remark: This is the format which the node *Inject* emits at option **timestamp**.
+- ***a property containing a string that is not a recognisable date/time (including `null`):*** Then no conversion takes place, the output will be an empty string plus a debug warning.
 
-* is "timestamp", the current date/time is used as input. Output will be processed as normal.
-* is "msg", "global" or "flow" and the given property is empty or does not exist, the current date/time is used as input. Output will be processed as normal.
-* is a property containing a numeric value, it will be assumed to be a UNIX time value (ms since 1970-01-01 I think). Output will be processed as normal.
-* is a property containing a string that is not a recognisable date/time (including `null`). Output is an empty string plus a debug warning.
-
-
-- Timestamp ist in ms seit 01.01.1970: https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/. Dies ist das Format, das ein Inject-Node bei Output **timestamp** ausgibt
-
-
-If the input property does not exist or is left blank, the current date/time will be assumed. This can be used to add a current timestamp to a flow of any kind easily.
-
-Otherwise, the input is processed as follows:
-
-   If input is "timestamp" or a JS datetime object or a string that Moment.js can resolve (with the help of moment.parseFormat). It will be processed as normal.
-   If the input is null, is a blank string or a string that cannot be converted. The output will be an empty string.
-
-String input warnings
 
 Note that parsing date/time strings is a hard problem. moment.parseFormat helps but it isn't magic. We assume that ambiguous input dates such as 3/5/05 are in EU/UK format dd/mm/yy unless either the input timezone is in America or the locale is set to en_US.
-
-
 
 
 ## Outputs of node *moment*
