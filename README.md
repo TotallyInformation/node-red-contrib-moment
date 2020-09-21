@@ -1,13 +1,6 @@
-# xxx ToDo
-
-## .html
-- Hilfetext prüfen/korrigieren/erweitern
-  - Nur noch moments node. humanizer node ist erledigt.
-
-
 # node-red-contrib-moment
 [Node-RED](http://nodered.org) node ***moment*** produces a nicely formatted Date/Time string using the Moment.JS library. The node is fully time zone/DST/locale aware.  
-Node ***humanizer*** converts time durations (differences) into textual descriptions (e.g. 2 minutes).   
+Node ***humanizer*** converts time durations (time spans) into textual descriptions (e.g. 2 minutes).   
 Both nodes are locale aware regarding the language of the output strings.
 
 ![node-appearance](images/node-appearance.png "Node appearance")  
@@ -36,6 +29,7 @@ Based on thoughts from a [conversation in the Node-RED Google Group](https://gro
 - Because this node uses the `moment` library and because of an upstream security issue requiring updates to underlying libraries, this version of the node is **dependent on Node.JS v6 or above**. Therefore it will not work with Node v4
 - If you are forced to use Node v4, please stay with v2x of this node
 - Otherwise, please consider upgrading to the current LTS version of Node.JS
+
 
 
 <a name="installation"></a>
@@ -126,7 +120,6 @@ Note that with the exception of ISO8601, other formats are in the specified time
 Use an output timezone of UTC to force output to that.
 
 
-
 ##### Format string defined by moment.js
 The format string defined by moment.js basically has two options:
 - ***Manual given format string:*** This is a string where the time/date parts are represented by characters. Also text parts are allowed. Examples:
@@ -134,8 +127,6 @@ The format string defined by moment.js basically has two options:
   - "dddd, MMMM Do YYYY, h:mm:ss a" gives *Sunday, February 14th 2010, 3:25:50 pm*
   - "[Today is] dddd" gives *Today is Sunday*
   - "[Date: ]YYYY-MM-DD  [Time: ]HH:mm:ss" gives *Date: 2020-09-20  Time: 08:31:45*
-  - ["fromNow"](https://momentjs.com/docs/#/displaying/fromnow/) gives *in a month*
-  - ["calendar"](https://momentjs.com/docs/#/displaying/calendar-time/) gives *Last Monday*
 - ***Predefined localized string:*** This is a string which defines a localized format. Examples:
   - "LLL" gives *October 20, 2020 8:33 AM*
   - "LTS" gives *8:30:25 PM*
@@ -145,27 +136,34 @@ For more options see https://momentjs.com/docs/#/displaying/format/.
 
 ##### Format string is left blank resp. is "ISO8601" or "ISO"  
 In this case the output is in ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z".  
-Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.  
+Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.   
+See also [moment().toISOString()](https://momentjs.com/docs/#/displaying/as-iso-string/).
 
-##### Format string is "date" resp. "jsDate"
-This is a Javascript Date object in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`. It may be used for manual (fixed) data/time values.
+##### Format string is "object"
+This is a *JSON date time object* in the form `{"years":nnnn, "months":nn, "date":nn, "hours":nn, "minutes":nn, "seconds":nn, "milliseconds":nnn}`.  
 
-WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.
+WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.  
+See also [moment().toObject()](https://momentjs.com/docs/#/displaying/as-object/).
 
 ##### Format string is "fromNow" resp. "timeAgo"
-This is a human readable output, e.g. *30 minutes ago*.
+This is a human readable output, e.g. *30 minutes ago* or *in a month* (only rough time spans are given in this output format type, see also the *humanizer* example below). The time span is derived from the actual time and the time fed into the node.     
+See also [moment().fromNow()](https://momentjs.com/docs/#/displaying/fromnow/).
 
 ##### Format string is "calendar" resp. "aroundNow"
-This is a human readable alternative, e.g. *Last Monday*, *Tomorrow 2:30pm*.
-Note that dates beyond a week from now are output as yyyy-mm-dd.
+This is a human readable alternative, e.g. *Last Monday* or *Tomorrow 2:30pm*.
+Note that dates beyond a week from now are output as yyyy-mm-dd.  
+See also [moment().calendar()](https://momentjs.com/docs/#/displaying/calendar-time/).
+
+##### Format string is "date" resp. "jsDate"
+This output format type is actually not working (see [issue #37](https://github.com/TotallyInformation/node-red-contrib-moment/issues/37)).
 
 
 #### *Locale*
-In case of a textual output string contents the *Locale* property defines the language of the textual parts (e.g. "October" vs. "Oktober" vs. "ottobre").
+In case of a textual output string contents the *Locale* property defines the language of the textual parts (e.g. "October" vs. "Oktober" vs. "ottobre" vs. "lokakuuta").
 
 If the output is shown in the wrong format, such as dates in US mm/dd/yy format, change the output locale. For example, using en_gb will force short dates to output in dd/mm/yy format. The default is en which moment assumes means the USA :-(
 
-See also [Locale Helper](https://lh.2xlibre.net/locales/).
+See also [Locale Helper](https://lh.2xlibre.net/locales/) (Note: Not every locale given there is supported).
 
 
 ### *Topic* (additional topic)
@@ -179,12 +177,15 @@ A resulting `msg` may be (value "myTopicString"):
 
 ## Input of node *moment*
 
-Input values in the object **Input from** can be the following:
+Input values fed via **Input from** can be of the following types:
 
 - ***timestamp:*** The current date/time is used as input.
 - ***msg***, ***global*** or ***flow*** and the given property is empty or does not exist: The current date/time is used as input.
-- ***JSON date time object:*** This data time object may contain the following elements: *years*, *quarters*, *months*, *weeks*, *days*, *hours*, *minutes*, *seconds*, *milliseconds*.   
-  <br>Example: `{"years":2020,"months":1,"date":11,"hours":5,"minutes":6}`.
+- ***JSON date time object:*** This data time object may contain the following elements: *years*, *months*, *days*, *hours*, *minutes*, *seconds*, *milliseconds*.    
+  Example: `{"years":2020,"months":1,"date":11,"hours":5,"minutes":6}`.  
+  If elements are not given (e.g. *years* and *months* are missing in the object) the actual time values are used instead.
+- ***a property containing a string that is a recognizable date/time:*** The value will be interpreted and processed.  
+  Example: `2020-02-11T05:06`
 - ***a property containing a numeric value:*** The value will be assumed to be a [UNIX time value](https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/) (ms since 1970-01-01). Remark: This is the format which the node *Inject* emits at option **timestamp**.
 - ***a property containing a string that is not a recognisable date/time (including `null`):*** Then no conversion takes place, the output will be an empty string plus a debug warning.
 
@@ -193,47 +194,37 @@ Note that parsing date/time strings is a hard problem. moment.parseFormat helps 
 
 
 ## Outputs of node *moment*
+The date/time output is a formatted string if the configuration property ***Output Format*** is anything other than *date* resp. *jsDate* or *object* in which case the output is a Javascript date object or an object as described below respectively.
 
-If the **output** property is not `msg.payload` the input `msg.payload` is retained in the output.
-
-See the node's built-in help for more details.
-
-Is a formatted string if the output format is anything other than date or object in which case, the output is a Javascript date object or an object as described below respectively.
-
-Output string formatting is controlled by the Locale setting and the output format field. Note that the output Timezone is ignored for ISO8601 output (the default), such output is always in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
+Output string formatting is controlled by the ***Locale*** and the ***Output Format*** setting. Note that the output Timezone is ignored for ISO8601 output (the default), such output is always in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
 
 Specifying different input and output timezones allows you to translated between them.
 
-The output msg will pass through the input msg.topic unless it is overridden. If the "Output to" field is changed from the default msg.payload, the input msg.payload will also be passed through.
-
-
+The output `msg` will pass through the input `msg.topic` unless it is overridden by the ***Topic*** configuration property. If the ***Output to*** field is changed from the default `msg.payload`, the input `msg.payload` will also be passed through.
 
 
 
 # Usage of node *humanizer*
-Specify the input variable to execute humanize on, `msg.payload.humanized` will contain a humanized version of the specified span in seconds. (Contributed by [Laro88](https://github.com/Laro88))
+This node converts an input time span to a humanized text string to the output `msg.payload.humanized`. The language of the output string is derived from the locale of the system, i.e. it is not changeable (like the *Locale* property of the *moment* node).  
+See also [moment.duration().humanize()](https://momentjs.com/docs/#/durations/humanize/).
+
+(Contributed by [Laro88](https://github.com/Laro88))
 
 
 ## Configuration of node *humanizer*
 
 ![humanizer-node-settings](images/humanizer-node-configuration.png "Node humanizer properties")  
-**Fig. xxx:** Properties of node *humanizer*
-
-- setzt Zeitdauern in Text um: Integer -> String
-- macht Textformat (Ausgabesprache) an locale des PCs fest, d.h. en_EN, de_DE,...
-  - Ausgabesprache ist nicht einstellbar
-
+**Fig. 4:** Properties of node *humanizer*
 
 ### 'Input variable'
-
-
-
+This property defines the input `msg.payload` property which shall be used for the conversion. If left blank, `msg.payload` is used.
 
 ## Input of node *humanizer*
-
+The input is a number which defines a time span in seconds.
 
 ## Outputs of node *humanizer*
-
+The output is a string object in `msg.payload.humanized`.  
+The time spans are evaluated in intervals, see *humanizer* example for details.
 
 
 # Examples
@@ -247,15 +238,37 @@ All example flows can also be found in the examples folder of this package.
 The basic usage is shown in Fig. 2. The following examples shall give an overview how to use the rich configuration properties.
 
 ### Usage of configuration properties *Output Timezone*, *Output Format* and *Adjustment*
+A sample flow is:
+
+![Alt text](images/moment-timezone-format-adjustment.png?raw=true "Output Timezone, Output Format and Adjustment")  
+[**output-timezone-format-adjustment flow**](examples/timezones-outputformat-example-flow.json)  
+**Fig. 5:** Example flow showing the usage of *Output Timezone*, *Output Format* and *Adjustment*
 
 
 ### Usage of configuration property *Input Timezone*
+A sample flow is:
+
+![Alt text](images/moment-string-input.png?raw=true "Input Timezone")  
+[**input-timezone flow**](examples/input-timezones-example-flow.json)  
+**Fig. 6:** Example flow showing the usage of *Input Timezone*
+
 
 
 ### Usage of configuration properties *Output Format* and *Locale*
+A sample flow is:
+
+![Alt text](images/moment-locale-format.png?raw=true "Output Format and Locale")  
+[**output-format-locale flow**](examples/locale-example-flow.json)  
+**Fig. 7:** Example flow showing the usage of *Output Format* and *Locale*
 
 
-## Usage of the *humanize* node
+
+## Usage of the *humanizer* node
+A sample flow is:
+
+![Alt text](images/humanizer-time-limits.png?raw=true "Humanizer node")  
+[**humanizer flow**](examples/humanize-example-flow.json)  
+**Fig. 8:** Example flow showing the usage of the *humanizer* node
 
 
 
