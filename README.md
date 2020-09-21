@@ -132,7 +132,6 @@ The format string defined by moment.js basically has two options:
   - "LTS" gives *8:30:25 PM*
   - "llll" gives *Thu, Sep 4, 1986 8:30 PM*
 
-For more options see https://momentjs.com/docs/#/displaying/format/.
 
 ##### Format string is left blank resp. is "ISO8601" or "ISO"  
 In this case the output is in ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z".  
