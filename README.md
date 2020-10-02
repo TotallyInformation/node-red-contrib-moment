@@ -35,6 +35,12 @@ To get the latest development version, install with:
     npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
+- 3.1.1 - Update os-locale from 3.1.0 to 4.0.0, update moment-timezone to 0.5.28
+- 3.1.0 - 
+   - Update dependencies.
+   - Prep for Node-RED v1, Switch min versions to node.js v8.16, Node-RED v0.18
+   - Workaround for upstream parseFormat bug, see [Issue #24](https://github.com/TotallyInformation/node-red-contrib-moment/issues/24). If input is an ISO date string with seconds >3dp, the input is trimmed to 3dp seconds.
+   - Added `msg.settings` to output msg. Shows the settings/parameters used. Allows for further processing or validation if needed.
 - 3.0.2 - Update dependencies to latest versions.
 - 3.0.1 - **Bug Fix** Remove errant log statement.
 - 3.0.0 - No feature changes, just upgrades of the dependent libraries. Note breaking change, minimum Node.JS version is now v6 or above.
