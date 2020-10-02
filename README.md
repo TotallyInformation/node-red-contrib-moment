@@ -169,6 +169,9 @@ The format string defined by moment.js basically has two options:
   - "dddd, MMMM Do YYYY, h:mm:ss a" gives *Sunday, February 14th 2010, 3:25:50 pm*
   - "[Today is] dddd" gives *Today is Sunday*
   - "[Date: ]YYYY-MM-DD  [Time: ]HH:mm:ss" gives *Date: 2020-09-20  Time: 08:31:45*
+  - ["fromNow"](https://momentjs.com/docs/#/displaying/fromnow/) gives *in a month*	
+  - ["calendar"](https://momentjs.com/docs/#/displaying/calendar-time/) gives *Last Monday*
+  
 - ***Predefined localized string:*** This is a string which defines a localized format. Examples:
   - "LLL" gives *October 20, 2020 8:33 AM*
   - "LTS" gives *8:30:25 PM*
@@ -182,22 +185,26 @@ In this case the output is in ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z".
 Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.   
 See also [moment().toISOString()](https://momentjs.com/docs/#/displaying/as-iso-string/).
 
-##### Format string is "object"
+##### Format string is "date" resp. "jsDate"
 
-This is a *JSON date time object* in the form `{"years":nnnn, "months":nn, "date":nn, "hours":nn, "minutes":nn, "seconds":nn, "milliseconds":nnn}`.  
+This is a *Javascript Date object* in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`. 
+It may be used for manual (fixed) data/time values.
 
-WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason.  
+WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason. 
+
 See also [moment().toObject()](https://momentjs.com/docs/#/displaying/as-object/).
 
 ##### Format string is "fromNow" resp. "timeAgo"
 
-This is a human readable output, e.g. *30 minutes ago* or *in a month* (only rough time spans are given in this output format type, see also the *humanizer* example below). The time span is derived from the actual time and the time fed into the node.     
+This is a human readable output, e.g. *30 minutes ago* or *in a month* (only rough time spans are given in this output format type, see also the *humanizer* example below). The time span is derived from the actual time and the time fed into the node.
+
 See also [moment().fromNow()](https://momentjs.com/docs/#/displaying/fromnow/).
 
 ##### Format string is "calendar" resp. "aroundNow"
 
 This is a human readable alternative, e.g. *Last Monday* or *Tomorrow 2:30pm*.
-Note that dates beyond a week from now are output as yyyy-mm-dd.  
+Note that dates beyond a week from now are output as yyyy-mm-dd.
+
 See also [moment().calendar()](https://momentjs.com/docs/#/displaying/calendar-time/).
 
 ##### Format string is "date" resp. "jsDate"
@@ -226,16 +233,22 @@ A resulting `msg` may be (value "myTopicString"):
 
 ## Input of node *moment*
 
-Input values fed via **Input from** can be of the following types:
+Input values in the object **Input from** can be of the following types:
 
 - ***timestamp:*** The current date/time is used as input.
 - ***msg***, ***global*** or ***flow*** and the given property is empty or does not exist: The current date/time is used as input.
-- ***JSON date time object:*** This data time object may contain the following elements: *years*, *months*, *days*, *hours*, *minutes*, *seconds*, *milliseconds*.    
-  Example: `{"years":2020,"months":1,"date":11,"hours":5,"minutes":6}`.  
+- ***JSON date time object:*** This data time object may contain the following elements: *years*, *months*, *days*, *hours*, *minutes*, *seconds*, *milliseconds*.
+  
+  Example: `{"years":2020,"months":1,"date":11,"hours":5,"minutes":6}`.
+
   If elements are not given (e.g. *years* and *months* are missing in the object) the actual time values are used instead.
-- ***a property containing a string that is a recognizable date/time:*** The value will be interpreted and processed.  
+
+- ***a property containing a string that is a recognizable date/time:*** The value will be interpreted and processed.
+  
   Example: `2020-02-11T05:06`
+
 - ***a property containing a numeric value:*** The value will be assumed to be a [UNIX time value](https://momentjs.com/docs/#/displaying/unix-timestamp-milliseconds/) (ms since 1970-01-01). Remark: This is the format which the node *Inject* emits at option **timestamp**.
+  
 - ***a property containing a string that is not a recognisable date/time (including `null`):*** Then no conversion takes place, the output will be an empty string plus a debug warning.
 
 
@@ -243,6 +256,8 @@ Note that parsing date/time strings is a hard problem. moment.parseFormat helps 
 
 
 ## Outputs of node *moment*
+
+If the **output** property is not `msg.payload` the input `msg.payload` is retained in the output.
 
 The date/time output is a formatted string if the configuration property ***Output Format*** is anything other than *date* resp. *jsDate* or *object* in which case the output is a Javascript date object or an object as described below respectively.
 
@@ -257,6 +272,7 @@ The output `msg` will pass through the input `msg.topic` unless it is overridden
 # Usage of node *humanizer*
 
 This node converts an input time span to a humanized text string to the output `msg.payload.humanized`. The language of the output string is derived from the locale of the system, i.e. it is not changeable (like the *Locale* property of the *moment* node).  
+
 See also [moment.duration().humanize()](https://momentjs.com/docs/#/durations/humanize/).
 
 (Contributed by [Laro88](https://github.com/Laro88))
@@ -341,8 +357,6 @@ A sample flow is:
 - [Moment-ParseFormat](https://github.com/gr2m/moment-parseformat) - Tries to interpret input strings as date/times and creates a format string that moment.js can use.
 - [Locale Helper](https://lh.2xlibre.net/locales/) - lists locale options
 - [Node-RED](http://nodered.org/docs/) - of course!
-
-
 
 
 # To Do
