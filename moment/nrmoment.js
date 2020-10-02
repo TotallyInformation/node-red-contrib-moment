@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 Julian Knight (Totally Information)
+ * Copyright (c) 2020 Julian Knight (Totally Information)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ var hostLocale = osLocale.sync()
 var moduleName = 'moment'
 
 /** Catch & correct input strings in ISO format with seconds >3dp
- * since parseFormat has an unfixed bug (Issue #24)
+ * since parseFormat has an unfixed bug (Issue #24, https://github.com/gr2m/moment-parseformat/issues/96)
  * @param {string} inp Input date/time string
  */
 function catchDp(inp) {
@@ -242,7 +242,7 @@ module.exports = function (RED) {
 
             // Check if the input is a date?
             if (!mDT.isValid()) {
-                // THIS SHOULD NEVER BE CALLED - it left to catch the occasional error
+                // THIS SHOULD NEVER BE CALLED - it is left to catch the occasional error
                 node.warn('The input property was NOT a recognisable date. Output will be a blank string')
                 setOutput(msg, node.outputType, node.output, '')
             } else {
@@ -281,6 +281,16 @@ module.exports = function (RED) {
                         // or we assume it is a valid format definition ...
                         setOutput(msg, node.outputType, node.output, mDT.format(node.format))
                 }
+            }
+
+            // Include settings in output
+            msg.settings = {
+                'input': inp,
+                'input_format': inpFmt,
+                'input_tz': node.inTz,
+                'output_format': inpFmt,
+                'output_locale': node.locale,
+                'output_tz': node.outTz,
             }
 
             // Send the output message
@@ -337,5 +347,13 @@ module.exports = function (RED) {
             'tz': hostTz,
             'locale': hostLocale
         })
+    })
+
+    /** Lookup API for country and zone names */
+    RED.httpAdmin.get('/contribapi/momentzones', RED.auth.needsPermission('moment.read'), function (req, res) {
+        if ( req.query.country ) {
+            console.log('[nrmoment:get:zones] Country URL param provided', req.query.country)
+        }
+        res.json(moment.tz.names())
     })
 }
