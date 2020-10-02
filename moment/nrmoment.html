@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2018 Julian Knight (Totally Information)
+  Copyright (c) 2020 Julian Knight (Totally Information)
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 
 <!-- First, the content of the edit dialog is defined.                       -->
-<script type="text/x-red" data-template-name="moment">
+<script type="text/html" data-template-name="moment">
     <!-- data-template-name identifies the node type this is for              -->
 
     <!-- INPUT -->
@@ -98,7 +98,7 @@
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <!-- The first <p> is used as the pop-up tool tip when hovering over pallette -->
-<script type="text/x-red" data-help-name="moment">
+<script type="text/html" data-help-name="moment">
     <p>
       Convert date/time object or string to nicely formatted text or date/time object.
     </p>
@@ -281,7 +281,7 @@
             this.value = _this.localeData.tz
           } else {
             // autocorrect common tz errors
-            this.value = this.value.replace(/^GMT|UTC/i, 'ETC/GMT')
+            this.value = this.value.trim().replace(/^(GMT|UTC)/i, 'ETC/$1')
           }
         })
 
