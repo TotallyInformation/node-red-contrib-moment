@@ -1,7 +1,9 @@
 # node-red-contrib-moment
 
-[Node-RED](http://nodered.org) node ***moment*** produces a nicely formatted Date/Time string using the Moment.JS library. The node is fully time zone/DST/locale aware.  
-Node ***humanizer*** converts time durations (time spans) into textual descriptions (e.g. 2 minutes).   
+[Node-RED](http://nodered.org) node ***moment*** produces a nicely formatted Date/Time string using the Moment.JS library. The node is fully time zone/DST/locale aware.
+
+Node ***humanizer*** converts time durations (time spans) into textual descriptions (e.g. 2 minutes).
+
 Both nodes are locale aware regarding the language of the output strings.
 
 ![node-appearance](images/node-appearance.png "Node appearance")  
@@ -26,14 +28,6 @@ Both nodes are locale aware regarding the language of the output strings.
 Based on thoughts from a [conversation in the Node-RED Google Group](https://groups.google.com/d/msg/node-red/SXEGvfFLfQA/fhJCGBWvYEAJ). Updated with timezone/locale capabilities after Jaques44's initial work. Updated with +/- adjustments after [another conversion in the Google Group](https://groups.google.com/forum/#!topic/node-red/u3qoISFoKus).
 
 
-**IMPORTANT NOTE FOR v3+**:
-
-- Because this node uses the `moment` library and because of an upstream security issue requiring updates to underlying libraries, this version of the node is **dependent on Node.JS v6 or above**. Therefore it will not work with Node v4
-- If you are forced to use Node v4, please stay with v2x of this node
-- Otherwise, please consider upgrading to the current LTS version of Node.JS
-
-
-
 <a name="installation"></a>
 # Installation
 
@@ -48,11 +42,8 @@ Basic installation:
 * go to the Node-RED "userDir" folder, typically `~/.node-red`
 * run `npm install node-red-contrib-moment`
 
-If you want to install the Node v4 compatible version:
-* run `npm install node-red-contrib-moment@2`
-
 To get the latest development version, install with:
-* run `npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master`
+* run `npm install TotallyInformation/node-red-contrib-moment`
 
 
 <a name="moment_usage"></a>
@@ -63,7 +54,6 @@ The easiest usage of the node is feeding it with an timestamp inject:
 
 **Fig. 2:** Basic usage node *moment*
 
-    npm install https://github.com/TotallyInformation/node-red-contrib-moment/tarball/master
 
 # Updates
 
@@ -126,6 +116,7 @@ The format of *Input Timezone* is in the format *region/location*, e.g. Europe/L
 **Note**: Spellings are not validated, if it doesn't seem to work, check the validity of *region/location* with these timezone lists.  
 
 The following behaviour is valid:
+
 - If the input data contains a Node-RED timestamp this property is ommitted
   - If the host system has a local timezone set (e.g. `dpkg-reconfigure tzdata` on Linux), the input timestamp is related to this local timezone.
   - If the host system has no local timezone set, the input timestamp is related to UTC.
@@ -156,15 +147,20 @@ These two properties in combination define the output format emitted in the outp
 #### *Output Format*
 
 The *Output Format* property defines the format and is described in the [moment.js displaying format section](https://momentjs.com/docs/#/displaying/format/).  
+
 It may be any format string defined by moment.js. The formatting additions from *moment-timezone* are also allowed.  In addition, further (not case sensitive, alternatives in brackets) format strings are also allowed.  
+
 Note that with the exception of ISO8601, other formats are in the specified timezone & DST. If not specified, the output timezone/DST is the same as the input.
+
 Use an output timezone of UTC to force output to that.
 
 
 ##### Format string defined by moment.js
 
 The format string defined by moment.js basically has two options:
+
 - ***Manual given format string:*** This is a string where the time/date parts are represented by characters. Also text parts are allowed. Examples:
+  
   - "DD.MM.YYYY HH:mm" gives *20.09.2020 08:30*
   - "dddd, MMMM Do YYYY, h:mm:ss a" gives *Sunday, February 14th 2010, 3:25:50 pm*
   - "[Today is] dddd" gives *Today is Sunday*
@@ -173,6 +169,7 @@ The format string defined by moment.js basically has two options:
   - ["calendar"](https://momentjs.com/docs/#/displaying/calendar-time/) gives *Last Monday*
   
 - ***Predefined localized string:*** This is a string which defines a localized format. Examples:
+  
   - "LLL" gives *October 20, 2020 8:33 AM*
   - "LTS" gives *8:30:25 PM*
   - "llll" gives *Thu, Sep 4, 1986 8:30 PM*
@@ -181,31 +178,34 @@ For more options see https://momentjs.com/docs/#/displaying/format/.
 
 ##### Format string is left blank resp. is "ISO8601" or "ISO"  
 
-In this case the output is in ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z".  
-Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.   
-See also [moment().toISOString()](https://momentjs.com/docs/#/displaying/as-iso-string/).
+In this case the output is in ISO 8602 format, e.g. "2015-01-28T16:24:48.123Z".
+
+Note that ISO8601 formatted output is ALWAYS in UTC ('Z', Zulu time) not local, no matter what output timezone you may specify.
+
+See also [`moment().toISOString()`](https://momentjs.com/docs/#/displaying/as-iso-string/).
 
 ##### Format string is "date" resp. "jsDate"
 
 This is a *Javascript Date object* in the form `{years:nnnn, months:n, date:n, hours:n, minutes:n, seconds:n, milliseconds:n}`. 
+
 It may be used for manual (fixed) data/time values.
 
 WARNING: moment.js has a bizarre object format where the month is zero-based (0-11) instead of 1-based (1-12) like all the other elements are. I don't currently know why, I've raised an upstream issue but this appears to be a deliberate decision for some strange reason. 
 
-See also [moment().toObject()](https://momentjs.com/docs/#/displaying/as-object/).
+See also [`moment().toObject()`](https://momentjs.com/docs/#/displaying/as-object/).
 
 ##### Format string is "fromNow" resp. "timeAgo"
 
 This is a human readable output, e.g. *30 minutes ago* or *in a month* (only rough time spans are given in this output format type, see also the *humanizer* example below). The time span is derived from the actual time and the time fed into the node.
 
-See also [moment().fromNow()](https://momentjs.com/docs/#/displaying/fromnow/).
+See also [`moment().fromNow()`](https://momentjs.com/docs/#/displaying/fromnow/).
 
 ##### Format string is "calendar" resp. "aroundNow"
 
 This is a human readable alternative, e.g. *Last Monday* or *Tomorrow 2:30pm*.
 Note that dates beyond a week from now are output as yyyy-mm-dd.
 
-See also [moment().calendar()](https://momentjs.com/docs/#/displaying/calendar-time/).
+See also [`moment().calendar()`](https://momentjs.com/docs/#/displaying/calendar-time/).
 
 ##### Format string is "date" resp. "jsDate"
 
