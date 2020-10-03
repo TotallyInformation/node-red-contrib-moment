@@ -18,15 +18,15 @@
 // object or string using the moment.js library.
 
 // require moment.js (must be installed from package.js as a dependency)
-var moment = require('moment-timezone')
-var parseFormat = require('moment-parseformat')
-var osLocale = require('os-locale')
-var hostTz = moment.tz.guess()
-var hostLocale = osLocale.sync()
+const moment = require('moment-timezone')
+const parseFormat = require('moment-parseformat')
+const osLocale = require('os-locale')
+const hostTz = moment.tz.guess()
+const hostLocale = osLocale.sync()
 
 
 // Module name must match this nodes html file
-var moduleName = 'moment'
+const moduleName = 'moment'
 
 /** Catch & correct input strings in ISO format with seconds >3dp
  * since parseFormat has an unfixed bug (Issue #24, https://github.com/gr2m/moment-parseformat/issues/96)
@@ -58,7 +58,7 @@ module.exports = function (RED) {
         this.adjType = config.adjType || 'days' // days, hours, etc.
         this.adjDir = config.adjDir || 'add' // add or subtract
         this.format = config.format || '' // valid moment.js format string
-        this.locale = config.locale || false // valid moment.js locale string
+        this.locale = config.locale || hostLocale // valid moment.js locale string - default to host locale (v4)
         this.output = config.output || 'payload' // where to put the output
         this.outputType = config.outputType || 'msg' // msg, flow or global
         this.inTz = config.inTz || false // timezone, '' or zone name, e.g. Europe/London
@@ -155,7 +155,7 @@ module.exports = function (RED) {
                         dtHack = { days: +1 }
                         break
                     default:
-                        // Catch string ISO inputs with seconds >3dp which parseFormat treats incorrectly (Issue #24)
+                        // Catch string ISO inputs with seconds >3dp which parseFormat treats incorrectly (Issue #24) - trim to 3dp only
                         inp = catchDp(inp)
                         // Try to guess locale so as to guess whether DMY or MDY
                         var prefOrder = { preferredOrder: { '/': 'DMY', '.': 'DMY', '-': 'YMD' } }
@@ -171,9 +171,29 @@ module.exports = function (RED) {
 
             // At this point, `inp` SHOULD be a Date object and safe to pass to moment.js
 
-            if (!node.inTz) { node.inTz = hostTz }
-            if (!node.outTz) { node.outTz = node.inTz }
+            // If the input TZ is not set ...
+            if (!node.inTz) {
+                // Check if input TZ is provided in the msg?
+                if (msg.inTz) {
+                    node.inTz = msg.inTz
+                } else {
+                    // Otherwise take it from the client (browser) TZ
+                    node.inTz = hostTz 
+                }
+            }
+            // If the output TZ is not set ...
+            if (!node.outTz) { 
+                // Check if output TZ is provided in the msg?
+                if (msg.inTz) {
+                    node.inTz = msg.inTz
+                } else {
+                    // Otherwise make it the same as the input TZ
+                    node.outTz = node.inTz 
+                }
+            }
+
             // Validate input and output timezones - @since 2.0.4
+            // TODO: Needs more validation
             if (moment.tz.zone(node.inTz) === null) {
                 // tz invalid, warn and set to UTC
                 node.warn('Moment: Input Timezone Invalid, reset to UTC - see http://momentjs.com/timezone/docs/#/data-loading/')
@@ -210,7 +230,6 @@ module.exports = function (RED) {
             if (dtHack !== '') { mDT.add(dtHack) }
 
             // JK: Added OS locale lookup
-            if (!node.locale) { node.locale = hostLocale }
             // JK: Add a trap to Jaques44's locale code in case the output locale string is invalid
             try {
                 // Jacques44 - set locale for localised output formats
@@ -349,7 +368,9 @@ module.exports = function (RED) {
         })
     })
 
-    /** Lookup API for country and zone names */
+    /** Lookup API for country and zone names
+     * TODO: Not yet completed and no front-end settings yet
+     */
     RED.httpAdmin.get('/contribapi/momentzones', RED.auth.needsPermission('moment.read'), function (req, res) {
         if ( req.query.country ) {
             console.log('[nrmoment:get:zones] Country URL param provided', req.query.country)
