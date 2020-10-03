@@ -208,6 +208,9 @@
 </script>
 
 <script type="text/javascript">
+;(function () { // Isolate the front-end code
+    'use strict'
+
     function tzValidate(val) {
         // TODO: See /contribapi/momentzones in nrmoment.js
         // auto-correct the entry
@@ -287,4 +290,5 @@
 
       } // --- end of oneditprepare --- //
     }); // ---- end of RED.nodes.registerType ---- //
+})()
 </script>
