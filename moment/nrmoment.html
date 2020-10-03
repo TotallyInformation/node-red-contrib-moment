@@ -14,10 +14,6 @@
   limitations under the License.
 -->
 
-<!-- This creates and configures the onscreen elements of the node           -->
-
-
-<!-- First, the content of the edit dialog is defined.                       -->
 <script type="text/html" data-template-name="moment">
     <!-- data-template-name identifies the node type this is for              -->
 
@@ -96,12 +92,15 @@
 </script>
 
 
-<!-- Next, some simple help text is provided for the node.                   -->
-<!-- The first <p> is used as the pop-up tool tip when hovering over pallette -->
+<!-- The first <p> is used as the pop-up tool tip when hovering over palette -->
 <script type="text/html" data-help-name="moment">
     <p>
       Convert date/time object or string to nicely formatted text or date/time object.
     </p>
+    <ul>
+        <li><a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">Valid Timezone reference</a></li>
+        <li><a href="https://momentjs.com/docs/#/displaying/format/" target="_blank">Date/Time formatting codes</a></li>
+    </ul>
     <p>
       Uses the moment.js library. Now updated to use moment-timezone.js for full timezone and DST handling.
       Also uses moment.parseFormat for string inputs and os-locale for output localisation.
@@ -132,7 +131,8 @@
 
     <h3>Input Timezone</h3>
       <p>
-        If blank, the node will try to guess. If you have set your host system to a local timezone (e.g. <code>dpkg-reconfigure tzdata</code> on Linux)
+        Will try to use <code>msg.inTz</code>, if that is not present, the input TZ setting will be used and if that isn't present, the node will try to guess. If you have set your host system to a local timezone 
+        (e.g. <code>dpkg-reconfigure tzdata</code> on Linux)
         then by default, input timestamps from the <code>inject</code> node will be in that timezone, otherwise they will be in UTC.
         You can override this by specifying the full timezone in the format <code>region/location</code>,
         e.g. <code>Europe/London</code>. Note that spellings are not validated, if it doesn&apos;t seem to work, check the valid timezone
@@ -150,7 +150,7 @@
         in UTC. For other formats, the output will be in the specified timezone which defaults to your host timezone.
       </p>
       <p>
-        Specifying different input and output timezones allows you to translated between them.
+        Specifying different input and output timezones allows you to translated between them. If left blank in settings, the output timezone may be set using <code>msg.outTz</code>.
       </p>
       <p>
         The output msg will pass through the input msg.topic unless it is overridden. If the "Output to" field is changed
@@ -207,12 +207,12 @@
       </p>
 </script>
 
-<!-- Finally, the node type is registered along with all of its properties   -->
 <script type="text/javascript">
     function tzValidate(val) {
-      // auto-correct the entry
-      //$('#node-input-inTz').val( val.replace(/^GMT|UTC/i, 'ETC/GMT') )
-      return true
+        // TODO: See /contribapi/momentzones in nrmoment.js
+        // auto-correct the entry
+        //$('#node-input-inTz').val( val.replace(/^GMT|UTC/i, 'ETC/GMT') )
+        return true
     }
 
     RED.nodes.registerType('moment',{
