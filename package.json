@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-moment",
-  "version": "3.1.1-dev2",
+  "version": "4.0.0-dev1",
   "description": "Node-Red Node that produces formatted Date/Time output using the Moment.JS library. Timezone, dst and locale aware.",
   "scripts": {
     "push": "git push origin",
@@ -15,10 +15,13 @@
     "gitpushtags": "git push origin --tags"
   },
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.0",
     "moment-parseformat": "^3.0.0",
-    "moment-timezone": "^0.5.28",
-    "os-locale": "^4.0.0"
+    "moment-timezone": "^0.5.31",
+    "os-locale": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node-red": "^1.1.1"
   },
   "author": {
     "name": "Julian Knight",
@@ -41,6 +44,7 @@
   "keywords": [
     "node-red",
     "moment",
+    "momentjs",
     "time",
     "date",
     "timezone",
@@ -48,7 +52,7 @@
     "DST"
   ],
   "node-red": {
-    "version": ">=0.18.0",
+    "version": ">=1.0.0",
     "nodes": {
       "moment": "moment/nrmoment.js",
       "humanizer": "moment/nrhumanizer.js"
@@ -56,7 +60,7 @@
     "notyetnodes": {}
   },
   "engines": {
-    "node": ">=8.16"
+    "node": ">=10"
   },
   "browserslist": [
     "> 0.5%",
