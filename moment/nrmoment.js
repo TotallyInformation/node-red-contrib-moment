@@ -16,6 +16,7 @@
 
 // Node for Node-Red that outputs a nicely formatted string from a date/time
 // object or string using the moment.js library.
+'use strict'
 
 // require moment.js (must be installed from package.js as a dependency)
 const moment = require('moment-timezone')
@@ -41,11 +42,12 @@ function catchDp(inp) {
     return inp
 }
 
+/** Export the function that defines the node */
 module.exports = function (RED) {
     'use strict'
 
     // The main node definition - most things happen in here
-    function nodeGo(config) {
+    function nodeDefinition(config) {
         // Create a RED node
         RED.nodes.createNode(this, config)
 
@@ -64,7 +66,7 @@ module.exports = function (RED) {
         this.inTz = config.inTz || false // timezone, '' or zone name, e.g. Europe/London
         this.outTz = config.outTz || this.inTz // timezone, '' or zone name, e.g. Europe/London
 
-        // copy "this" object in case we need it in context of callbacks of other functions.
+        /** copy "this" object in case we need it in context of callbacks of other functions. */
         var node = this
 
         // respond to inputs....
@@ -171,23 +173,23 @@ module.exports = function (RED) {
 
             // At this point, `inp` SHOULD be a Date object and safe to pass to moment.js
 
-            // If the input TZ is not set ...
-            if (!node.inTz) {
-                // Check if input TZ is provided in the msg?
-                if (msg.inTz) {
-                    node.inTz = msg.inTz
-                } else {
-                    // Otherwise take it from the client (browser) TZ
+            // Check if input TZ is provided in the msg?
+            if (msg.inTz) {
+                node.inTz = msg.inTz
+            } else {
+                // If the input TZ is not set ...
+                if (!node.inTz) {
+                    // take it from the host TZ
                     node.inTz = hostTz 
                 }
             }
-            // If the output TZ is not set ...
-            if (!node.outTz) { 
-                // Check if output TZ is provided in the msg?
-                if (msg.inTz) {
-                    node.inTz = msg.inTz
-                } else {
-                    // Otherwise make it the same as the input TZ
+            // Check if output TZ is provided in the msg?
+            if (msg.outTz) {
+                node.outTz = msg.outTz
+            } else {
+                // If the output TZ is not set ...
+                if (!node.outTz) { 
+                    // make it the same as the input TZ
                     node.outTz = node.inTz 
                 }
             }
@@ -307,7 +309,7 @@ module.exports = function (RED) {
                 'input': inp,
                 'input_format': inpFmt,
                 'input_tz': node.inTz,
-                'output_format': inpFmt,
+                'output_format': node.format,
                 'output_locale': node.locale,
                 'output_tz': node.outTz,
             }
@@ -355,9 +357,8 @@ module.exports = function (RED) {
 
     } // ---- end of nodeGo function ---- //
 
-    // Register the node by name. This must be called before overriding any of the
-    // Node functions.
-    RED.nodes.registerType(moduleName, nodeGo)
+    /** Register the node by name. This must be called before overriding any of the Node functions. */
+    RED.nodes.registerType(moduleName, nodeDefinition)
 
     // Create API listener: sends the host locale & timezone to the admin ui
     // NB: uses Express middleware on the admin server
