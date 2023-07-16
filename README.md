@@ -1,5 +1,7 @@
 # node-red-contrib-moment
 
+**Please note that this node is unlikely to recieve further enhancements now that moment.js is built into JSONata and so is available from change, function and other nodes.**
+
 [Node-RED](http://nodered.org) node ***moment*** produces a nicely formatted Date/Time string using the Moment.JS library. The node is fully time zone/DST/locale aware.
 
 Node ***humanizer*** converts time durations (time spans) into textual descriptions (e.g. 2 minutes).

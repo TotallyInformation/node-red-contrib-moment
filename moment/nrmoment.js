@@ -21,7 +21,8 @@
 // require moment.js (must be installed from package.js as a dependency)
 const moment = require('moment-timezone')
 const parseFormat = require('moment-parseformat')
-const osLocale = require('os-locale')
+// const osLocale = require('os-locale')
+const { osLocale } = require('os-locale-s')
 const hostTz = moment.tz.guess()
 const hostLocale = osLocale.sync()
 

@@ -1,3 +1,15 @@
+Please note that this node is unlikely to recieve further enhancements now that moment.js is built into JSONata and so is available from change, function and other nodes.
+
+- 5.0.0 - Update dependencies, replace `os-locale` with `os-locale-s`.
+
+  os-locale library is now ESM only which won't work with Node-RED. It is also bloated. Replaced with the lighter-weight os-locale-s library
+
+  **WARNING** Neither os-locale nor os-locale-s seems to work correctly (at least on Windows 11) - it is returning `en_US` rather than `en_GB` on my UK only W11 system.
+
+  **BREAKING** Minimum node.js version is now 14.14 and the minimum Node-RED version is v3.
+
+  **FIXED** - output format `x` and `X` now accepted since the moment.js library is now updated.
+
 - 4.0.0 - Dependency update, output settings, bug fix
    - **BREAKING CHANGE** Updated dependencies mean that minimum Node.js version is now v10 (previously v8). Minimum Node-RED version is now v1.0 (prevously v0.13)
    - Update dependencies
